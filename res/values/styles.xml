@@ -1,0 +1,45 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="app_theme" parent="@android:style/Theme.Black.NoTitleBar" />
+
+    <style name="text">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/orange</item>
+    </style>
+
+    <style name="text_title" parent="text">
+        <item name="android:textSize">@dimen/text_size_title</item>
+    </style>
+
+	<style name="text_subtitle" parent="text">
+        <item name="android:textSize">@dimen/text_size_subtitle</item>
+    </style>
+
+	<style name="text_primary" parent="text">
+        <item name="android:textSize">@dimen/text_size_primary</item>
+    </style>
+
+	<style name="text_secondary" parent="text">
+        <item name="android:textSize">@dimen/text_size_secondary</item>
+    </style>
+
+	<style name="text_tertiary" parent="text">
+        <item name="android:textSize">@dimen/text_size_tertiary</item>
+    </style>
+    
+	<style name="button" parent="@android:style/Widget.Button">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:padding">@dimen/margin_size_medium</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/button_bg</item>
+        <item name="android:textColor">@color/button_fg</item>
+    </style>
+    
+	<style name="button_primary" parent="button">
+	    <item name="android:textSize">@dimen/text_size_primary</item>
+	</style>
+
+</resources>
