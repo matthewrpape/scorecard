@@ -1,0 +1,17 @@
+<resources>
+
+    <!-- margin sizes -->
+    <dimen name="margin_size_small">6dp</dimen>
+    <dimen name="margin_size_medium">12dp</dimen>
+    <dimen name="margin_size_large">18dp</dimen>
+    <dimen name="activity_horizontal_margin">@dimen/margin_size_large</dimen>
+    <dimen name="activity_vertical_margin">@dimen/margin_size_large</dimen>
+
+    <!-- text sizes -->
+    <dimen name="text_size_title">56sp</dimen>
+    <dimen name="text_size_subtitle">42sp</dimen>
+    <dimen name="text_size_primary">34sp</dimen>
+    <dimen name="text_size_secondary">20sp</dimen>
+    <dimen name="text_size_tertiary">12sp</dimen>
+
+</resources>
