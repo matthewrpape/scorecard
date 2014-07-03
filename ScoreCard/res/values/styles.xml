@@ -29,10 +29,10 @@
     </style>
     
 	<style name="button" parent="@android:style/Widget.Button">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">@dimen/button_width</item>
+        <item name="android:layout_height">@dimen/button_height</item>
         <item name="android:layout_gravity">center</item>
-        <item name="android:padding">@dimen/margin_size_medium</item>
+        <item name="android:padding">@dimen/margin_size_small</item>
         <item name="android:gravity">center</item>
         <item name="android:background">@drawable/button_bg</item>
         <item name="android:textColor">@color/button_fg</item>
@@ -45,6 +45,14 @@
 	<style name="edit_text_primary" parent="text_primary">
 	    <item name="android:padding">@dimen/margin_size_small</item>
 	    <item name="android:background">@drawable/button_bg_enabled</item>
+	</style>
+
+	<style name="text_view" parent="button">
+	    <item name="android:background">@drawable/text_view_bg</item>
+	</style>
+
+	<style name="text_view_secondary" parent="text_view">
+	    <item name="android:textSize">@dimen/text_size_secondary</item>
 	</style>
 
 </resources>

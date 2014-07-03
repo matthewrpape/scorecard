@@ -14,6 +14,8 @@
     <!-- edit menus -->
     <string name="name">Name</string>
     <string name="save">Save</string>
+    <string name="increment">+</string>
+    <string name="decrement">-</string>
 
 	<!-- delete dialog -->
 	<string name="delete_title">Delete?</string>
@@ -34,5 +36,6 @@
 	<!-- edit course menu -->
 	<string name="add_course">Add Course</string>
 	<string name="edit_course">Edit Course</string>
+	<string name="holes_label">Number of holes</string>
 
 </resources>

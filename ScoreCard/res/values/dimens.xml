@@ -14,7 +14,22 @@
     <dimen name="text_size_secondary">20sp</dimen>
     <dimen name="text_size_tertiary">12sp</dimen>
 
+	<!-- ui backgrounds -->
+	<dimen name="stroke_width">3dp</dimen>
+	<dimen name="small_corner_radius">3dp</dimen>
+	<dimen name="large_corner_radius">7dp</dimen>
+
+    <!-- buttons -->
+    <dimen name="button_width">48dp</dimen>
+    <dimen name="button_height">@dimen/button_width</dimen>
+    <dimen name="button_stroke_width">@dimen/stroke_width</dimen>
+    <dimen name="button_corner_radius">@dimen/large_corner_radius</dimen>
+
     <!-- list views -->
     <dimen name="list_view_divider_height">0dp</dimen>
+
+    <!-- text views -->
+    <dimen name="text_view_stroke_width">@dimen/stroke_width</dimen>
+    <dimen name="text_view_corner_radius">@dimen/small_corner_radius</dimen>
 
 </resources>

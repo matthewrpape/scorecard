@@ -2,14 +2,14 @@ package com.phantomrealm.scorecard.model;
 
 public class Course {
 
-	private static final int DEFAULT_HOLES = 18;
+	public static final int DEFAULT_HOLES = 18;
 	private static final int DEFAULT_PAR = 3;
 
 	private long mId;
 	private String mName;
 	private int[] mPars;
 
-	private static int[] createDefaultPars(int holes) {
+	public static int[] createDefaultPars(int holes) {
 		int[] pars = new int[holes];
 		for (int i = 0; i < pars.length; ++i) {
 			pars[i] = DEFAULT_PAR;
@@ -49,8 +49,12 @@ public class Course {
 		return mName;
 	}
 
-	public int getHoles() {
+	public int getHoleCount() {
 		return mPars.length;
+	}
+
+	public int[] getParList() {
+		return mPars;
 	}
 
 	public int getTotalPar() {
@@ -60,10 +64,6 @@ public class Course {
 		}
 		
 		return totalPar;
-	}
-
-	public int getPar(int index) {
-		return mPars[index];
 	}
 
 }

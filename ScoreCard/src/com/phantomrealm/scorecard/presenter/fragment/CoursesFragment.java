@@ -27,6 +27,10 @@ public class CoursesFragment extends Fragment {
 
 	private static final String TAG = CoursesFragment.class.getSimpleName();
 	
+	public static final String INTENT_EXTRA_COURSE_ID_TAG = "intent_extra_course_id";
+	public static final String INTENT_EXTRA_COURSE_NAME_TAG = "intent_extra_course_name";
+	public static final String INTENT_EXTRA_COURSE_PAR_TAG = "intent_extra_course_par";
+
 	private ListView mListView;
 	private CourseAdapter mAdapter;
 
@@ -88,9 +92,9 @@ public class CoursesFragment extends Fragment {
 	private void launchEditCourseActivity(Course course) {
 		Intent toLaunch = new Intent(getActivity(), EditCourseActivity.class);
 		if (course != null) {
-			// TODO - populate
-//			toLaunch.putExtra(INTENT_EXTRA_PLAYER_ID_TAG, player.getId());
-//			toLaunch.putExtra(INTENT_EXTRA_PLAYER_NAME_TAG, player.getName());
+			toLaunch.putExtra(INTENT_EXTRA_COURSE_ID_TAG, course.getId());
+			toLaunch.putExtra(INTENT_EXTRA_COURSE_NAME_TAG, course.getName());
+			toLaunch.putExtra(INTENT_EXTRA_COURSE_PAR_TAG, course.getParList());
 		}
 		
 		startActivity(toLaunch);
