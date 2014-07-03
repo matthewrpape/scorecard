@@ -21,10 +21,8 @@ public class EditPlayerActivity extends AbstractSingleFragmentActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		Intent intent = getIntent();
-		if (intent.getExtras().containsKey(PlayersFragment.INTENT_EXTRA_PLAYER_ID_TAG)) {
+		if (intent.hasExtra(PlayersFragment.INTENT_EXTRA_PLAYER_ID_TAG) && intent.hasExtra(PlayersFragment.INTENT_EXTRA_PLAYER_NAME_TAG)) {
 			mId = intent.getExtras().getLong(PlayersFragment.INTENT_EXTRA_PLAYER_ID_TAG);
-		}
-		if (intent.getExtras().containsKey(PlayersFragment.INTENT_EXTRA_PLAYER_NAME_TAG)) {
 			mName = intent.getExtras().getString(PlayersFragment.INTENT_EXTRA_PLAYER_NAME_TAG);
 		}
 

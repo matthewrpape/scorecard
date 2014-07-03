@@ -1,8 +1,6 @@
 package com.phantomrealm.scorecard.presenter.fragment;
 
 import android.app.Fragment;
-import android.content.ContentValues;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,8 +10,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.phantomrealm.scorecard.R;
-import com.phantomrealm.scorecard.model.db.DatabaseContract.PlayerEntry;
-import com.phantomrealm.scorecard.model.db.DatabaseHelper;
+import com.phantomrealm.scorecard.model.db.PlayerEntryUtil;
 
 public class EditPlayerFragment extends Fragment {
 
@@ -55,40 +52,12 @@ public class EditPlayerFragment extends Fragment {
 
 	public void savePlayer(String playerName) {
 		if (mId > 0) {
-			updatePlayer(mId, playerName);
+			PlayerEntryUtil.getUtil().updatePlayer(mId, playerName);
 		} else {
-			insertPlayer(playerName);
+			PlayerEntryUtil.getUtil().insertPlayer(playerName);
 		}
+		
+		getActivity().finish();
 	}
 
-	private void updatePlayer(long id, String playerName) {
-		// get the db in write mode
-		DatabaseHelper dbHelper = new DatabaseHelper(getActivity());
-		SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-		// create a new map of values, where column names are the keys
-		ContentValues values = new ContentValues();
-		values.put(PlayerEntry.COLUMN_NAME, playerName);
-
-		// describe which row we want to update
-		String whereClause = PlayerEntry._ID + " = " + id;
-
-		// update the existing row
-		int rows = db.update(PlayerEntry.TABLE_NAME, values, whereClause, null);
-		Log.d(TAG, "updated " + rows + " rows.");
-	}
-
-	private void insertPlayer(String playerName) {
-		// get the db in write mode
-		DatabaseHelper dbHelper = new DatabaseHelper(getActivity());
-		SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-		// create a new map of values, where column names are the keys
-		ContentValues values = new ContentValues();
-		values.put(PlayerEntry.COLUMN_NAME, playerName);
-
-		// insert the new row
-		long newRowId = db.insert(PlayerEntry.TABLE_NAME, null, values);
-		Log.d(TAG, "added entry with id: " + newRowId + ", name: " + playerName);
-	}
 }
