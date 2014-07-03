@@ -2,7 +2,9 @@ package com.phantomrealm.scorecard.presenter.fragment;
 
 import java.util.List;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +14,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 
 import com.phantomrealm.scorecard.R;
@@ -45,6 +48,13 @@ public class PlayersFragment extends Fragment {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				launchEditPlayerActivity(mAdapter.getPlayer(position));
+			}
+		});
+		mListView.setOnItemLongClickListener(new OnItemLongClickListener() {
+			@Override
+			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+				promptToDelete(mAdapter.getPlayer(position));
+				return true;
 			}
 		});
 		
@@ -95,6 +105,29 @@ public class PlayersFragment extends Fragment {
 		
 		mAdapter = new PlayerAdapter(getActivity(), R.layout.list_item_player, R.id.list_player_name, players);
 		mListView.setAdapter(mAdapter);
+	}
+
+	/**
+	 * Display a dialogue asking the user if they wish to delete a given {@link Player}
+	 * @param player
+	 */
+	private void promptToDelete(final Player player) {
+		new AlertDialog.Builder(getActivity())
+        .setIcon(android.R.drawable.ic_dialog_alert)
+        .setTitle(R.string.delete_title)
+        .setMessage(getString(R.string.delete_message, player.getName()))
+        .setPositiveButton(R.string.confirm_delete, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            	// delete player
+            	PlayerEntryUtil.getUtil().deletePlayer(player.getId());
+
+            	// update the list displayed to the user
+        		populatePlayerList();
+            }
+        })
+        .setNegativeButton(R.string.cancel_delete, null)
+        .show();
 	}
 
 }

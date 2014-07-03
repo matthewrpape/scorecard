@@ -19,5 +19,9 @@
     <string name="edit_player">Edit Player</string>
     <string name="name">Name</string>
     <string name="save">Save</string>
+    <string name="delete_title">Delete Player?</string>
+    <string name="delete_message">Are you sure you wish to delete %s?</string>
+    <string name="confirm_delete">Yes</string>
+    <string name="cancel_delete">No</string>
 
 </resources>

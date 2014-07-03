@@ -45,6 +45,8 @@ public class PlayerEntryUtil {
 		// insert the new row
 		long newRowId = db.insert(PlayerEntry.TABLE_NAME, null, values);
 		Log.d(TAG, "added entry with id: " + newRowId + ", name: " + playerName);
+		
+		db.close();
 	}
 
 	/**
@@ -67,6 +69,26 @@ public class PlayerEntryUtil {
 		// update the existing row
 		int rows = db.update(PlayerEntry.TABLE_NAME, values, whereClause, null);
 		Log.d(TAG, "updated " + rows + " rows.");
+		
+		db.close();
+	}
+	
+	/**
+	 * Delete an existing entry from the database
+	 * @param id of the row to remove from the database
+	 */
+	public void deletePlayer(long id) {
+		// get the db in write mode
+		SQLiteDatabase db = mHelper.getWritableDatabase();
+		
+		// describe which row we want to delete
+		String whereClause = PlayerEntry._ID + " = " + id;
+		
+		// delete from the database
+		int rows = db.delete(PlayerEntry.TABLE_NAME, whereClause, null);
+		Log.d(TAG, "deleted " + rows + " rows.");
+		
+		db.close();
 	}
 
 	/**
@@ -74,28 +96,31 @@ public class PlayerEntryUtil {
 	 * @return
 	 */
 	public List<Player> getPlayersFromDatabase() {
-		Cursor cursor = getPlayerResultsFromDatabase();
+		// get database and query for all players
+		SQLiteDatabase db = mHelper.getReadableDatabase();
+		Cursor cursor = getPlayerResultsFromDatabase(db);
+		
+		// convert database results into a list of Player objects
 		List<Player> players = getPlayersFromResults(cursor);
+		
+		// cleanup
 		cursor.close();
+		db.close();
 		
 		return players;
 	}
 
 	/**
 	 * Query the database to get the list of existing players, including ids and names.
+	 * @param db
 	 * @return
 	 */
-	private Cursor getPlayerResultsFromDatabase() {
-		// get the db in read mode
-		SQLiteDatabase db = mHelper.getReadableDatabase();
-
+	private Cursor getPlayerResultsFromDatabase(SQLiteDatabase db) {
 		// define which columns we are interested in
 		String[] projection = { PlayerEntry._ID, PlayerEntry.COLUMN_NAME };
 
-		// how we want the results sorted
-		String sortOrder = PlayerEntry._ID + " ASC";
-
-		return db.query( PlayerEntry.TABLE_NAME, projection, null, null, null, null, sortOrder);
+		// query the db
+		return db.query( PlayerEntry.TABLE_NAME, projection, null, null, null, null, null);
 	}
 	
 	/**
