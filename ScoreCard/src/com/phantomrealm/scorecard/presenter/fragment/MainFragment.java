@@ -10,6 +10,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
 import com.phantomrealm.scorecard.R;
+import com.phantomrealm.scorecard.presenter.activity.CoursesActivity;
 import com.phantomrealm.scorecard.presenter.activity.PlayersActivity;
 
 public class MainFragment extends Fragment {
@@ -37,6 +38,13 @@ public class MainFragment extends Fragment {
 				launchPlayersActivity();
 			}
 		});
+
+		view.findViewById(R.id.menu_button_courses).setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				launchCoursesActivity();
+			}
+		});
 		
 		return view;
 	}
@@ -46,6 +54,14 @@ public class MainFragment extends Fragment {
 	 */
 	private void launchPlayersActivity() {
 		Intent toLaunch = new Intent(getActivity(), PlayersActivity.class);
+		startActivity(toLaunch);
+	}
+
+	/**
+	 * Launch the activity for viewing existing courses
+	 */
+	private void launchCoursesActivity() {
+		Intent toLaunch = new Intent(getActivity(), CoursesActivity.class);
 		startActivity(toLaunch);
 	}
 
