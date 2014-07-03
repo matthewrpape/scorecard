@@ -17,5 +17,10 @@
     <color name="button_bg_border_disabled">@color/light_grey</color>
     <color name="button_bg_border_pressed">@color/white</color>
     <color name="button_fg">@color/orange</color>
-    
+
+	<!-- list item -->
+	<color name="list_item_bg_enabled">@color/black</color>
+	<color name="list_item_bg_disabled">@color/dark_grey</color>
+	<color name="list_item_bg_pressed">@color/dark_blue</color>
+
 </resources>

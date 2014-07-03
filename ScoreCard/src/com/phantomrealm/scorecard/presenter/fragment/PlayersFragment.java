@@ -13,6 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import com.phantomrealm.scorecard.R;
@@ -25,6 +27,8 @@ import com.phantomrealm.scorecard.view.PlayerAdapter;
 public class PlayersFragment extends Fragment {
 
 	private static final String TAG = PlayersFragment.class.getSimpleName();
+	public static final String INTENT_EXTRA_PLAYER_ID_TAG = "intent_extra_player_id";
+	public static final String INTENT_EXTRA_PLAYER_NAME_TAG = "intent_extra_player_name";
 	
 	private ListView mListView;
 	private PlayerAdapter mAdapter;
@@ -41,6 +45,12 @@ public class PlayersFragment extends Fragment {
 		View view = inflater.inflate(R.layout.fragment_players, container, false);
 
 		mListView = (ListView) view.findViewById(R.id.player_menu_player_list);
+		mListView.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				launchEditPlayerActivity(mAdapter.getPlayer(position));
+			}
+		});
 		
 		view.findViewById(R.id.player_menu_button_new_player).setOnClickListener(new OnClickListener() {
 			@Override
@@ -61,10 +71,23 @@ public class PlayersFragment extends Fragment {
 	}
 
 	/**
-	 * Launch the activity for editing a player
+	 * Launch the activity for adding a new player
 	 */
 	private void launchEditPlayerActivity() {
+		launchEditPlayerActivity(null);
+	}
+	
+	/**
+	 * Launch the activity for editing a player
+	 * @param player the existing player to edit or null to create a new player
+	 */
+	private void launchEditPlayerActivity(Player player) {
 		Intent toLaunch = new Intent(getActivity(), EditPlayerActivity.class);
+		if (player != null) {
+			toLaunch.putExtra(INTENT_EXTRA_PLAYER_ID_TAG, player.getId());
+			toLaunch.putExtra(INTENT_EXTRA_PLAYER_NAME_TAG, player.getName());
+		}
+		
 		startActivity(toLaunch);
 	}
 

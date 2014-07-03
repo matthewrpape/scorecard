@@ -18,15 +18,19 @@ import com.phantomrealm.scorecard.model.db.DatabaseHelper;
 public class EditPlayerFragment extends Fragment {
 
 	private static final String TAG = EditPlayerFragment.class.getSimpleName();
+	
+	private long mId;
+	private String mName;
+	
+	public EditPlayerFragment(long id, String name) {
+		mId = id;
+		mName = name;
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		Log.d(TAG, "onCreate");
 		super.onCreate(savedInstanceState);
-		if (savedInstanceState == null) {
-			Log.d(TAG, "onCreate from scratch");
-		} else {
-			Log.d(TAG, "onCreate from saved instance");
-		}
 	}
 	
 	@Override
@@ -35,17 +39,46 @@ public class EditPlayerFragment extends Fragment {
 		View view = inflater.inflate(R.layout.fragment_edit_player, container, false);
 
 		final EditText editText = (EditText) view.findViewById(R.id.edit_player_menu_name_edit_text);
+		if (mName != null) {
+			editText.setText(mName);
+		}
+			
 		view.findViewById(R.id.edit_player_menu_button_save).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				savePlayer(0, editText.getText().toString());
+				savePlayer(editText.getText().toString());
 			}
 		});
 
 		return view;
 	}
 
-	public void savePlayer(int playerId, String playerName) {
+	public void savePlayer(String playerName) {
+		if (mId > 0) {
+			updatePlayer(mId, playerName);
+		} else {
+			insertPlayer(playerName);
+		}
+	}
+
+	private void updatePlayer(long id, String playerName) {
+		// get the db in write mode
+		DatabaseHelper dbHelper = new DatabaseHelper(getActivity());
+		SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+		// create a new map of values, where column names are the keys
+		ContentValues values = new ContentValues();
+		values.put(PlayerEntry.COLUMN_NAME, playerName);
+
+		// describe which row we want to update
+		String whereClause = PlayerEntry._ID + " = " + id;
+
+		// update the existing row
+		int rows = db.update(PlayerEntry.TABLE_NAME, values, whereClause, null);
+		Log.d(TAG, "updated " + rows + " rows.");
+	}
+
+	private void insertPlayer(String playerName) {
 		// get the db in write mode
 		DatabaseHelper dbHelper = new DatabaseHelper(getActivity());
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -58,5 +91,4 @@ public class EditPlayerFragment extends Fragment {
 		long newRowId = db.insert(PlayerEntry.TABLE_NAME, null, values);
 		Log.d(TAG, "added entry with id: " + newRowId + ", name: " + playerName);
 	}
-
 }

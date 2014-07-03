@@ -1,14 +1,13 @@
 package com.phantomrealm.scorecard.view;
 
 import java.util.List;
-
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-
 import com.phantomrealm.scorecard.R;
 import com.phantomrealm.scorecard.model.Player;
 
@@ -25,21 +24,18 @@ public class PlayerAdapter extends ArrayAdapter<Player> {
 		mPlayers = players;
 		mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
+    
+    public Player getPlayer(int index) {
+    	return mPlayers.get(index);
+    }
 
     @Override
     public int getCount() {
     	return mPlayers == null ? 0 : mPlayers.size();
     }
 
-    public Player getItem(Player position) {
-        return position;
-    }
-
-    public long getItemId(int position) {
-        return position;
-    }
-
-    public View getView(int position, View convertView, ViewGroup parent) {
+    @SuppressLint("InflateParams")
+	public View getView(int position, View convertView, ViewGroup parent) {
     	if (convertView == null) {
     		convertView = mInflater.inflate(R.layout.list_item_player, null);
     	}
@@ -49,4 +45,5 @@ public class PlayerAdapter extends ArrayAdapter<Player> {
 
     	return convertView;
     }
+
 }
