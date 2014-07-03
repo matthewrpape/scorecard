@@ -1,59 +1,54 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/fragmentContainer"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical" >
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center_horizontal"
-        android:orientation="vertical" >
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal" >
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal" >
+        <TextView
+            android:id="@+id/menu_title_text_view"
+            style="@style/text_title"
+            android:text="@string/app_name" />
 
-            <TextView
-                android:id="@+id/title_text_view"
-                style="@style/text_title"
-                android:text="@string/app_name" />
+        <TextView
+            style="@style/text_secondary"
+            android:layout_alignRight="@id/menu_title_text_view"
+            android:layout_below="@id/menu_title_text_view"
+            android:text="@string/friendly_version_name"
+            android:textColor="@color/blue" />
+    </RelativeLayout>
 
-            <TextView
-                style="@style/text_secondary"
-                android:layout_below="@id/title_text_view"
-                android:layout_alignRight="@id/title_text_view"
-                android:text="@string/friendly_version_name"
-                android:textColor="@color/blue" />
-        </RelativeLayout>
-        
-        <TextView
-            android:id="@+id/menu_button_new_game"
-            style="@style/button_primary"
-            android:layout_width="match_parent"
-            android:layout_margin="@dimen/margin_size_small"
-            android:text="@string/new_game"/>
-        
-        <TextView
-            android:id="@+id/menu_button_players"
-            style="@style/button_primary"
-            android:layout_width="match_parent"
-            android:layout_margin="@dimen/margin_size_small"
-            android:text="@string/players"/>
-        
-        <TextView
-            android:id="@+id/menu_button_courses"
-            style="@style/button_primary"
-            android:layout_width="match_parent"
-            android:layout_margin="@dimen/margin_size_small"
-            android:text="@string/courses"/>
-        
-        <TextView
-            android:id="@+id/menu_button_scorecards"
-            style="@style/button_primary"
-            android:layout_width="match_parent"
-            android:layout_margin="@dimen/margin_size_small"
-            android:text="@string/scorecards"/>
-    </LinearLayout>
+    <TextView
+        android:id="@+id/menu_button_new_game"
+        style="@style/button_primary"
+        android:layout_width="match_parent"
+        android:layout_margin="@dimen/margin_size_small"
+        android:text="@string/new_game" />
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/menu_button_players"
+        style="@style/button_primary"
+        android:layout_width="match_parent"
+        android:layout_margin="@dimen/margin_size_small"
+        android:text="@string/players" />
+
+    <TextView
+        android:id="@+id/menu_button_courses"
+        style="@style/button_primary"
+        android:layout_width="match_parent"
+        android:layout_margin="@dimen/margin_size_small"
+        android:text="@string/courses" />
+
+    <TextView
+        android:id="@+id/menu_button_scorecards"
+        style="@style/button_primary"
+        android:layout_width="match_parent"
+        android:layout_margin="@dimen/margin_size_small"
+        android:text="@string/scorecards" />
+
+</LinearLayout>

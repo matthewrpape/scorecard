@@ -42,4 +42,9 @@
 	    <item name="android:textSize">@dimen/text_size_primary</item>
 	</style>
 
+	<style name="edit_text_primary" parent="text_primary">
+	    <item name="android:padding">@dimen/margin_size_small</item>
+	    <item name="android:background">@drawable/button_bg_enabled</item>
+	</style>
+
 </resources>
