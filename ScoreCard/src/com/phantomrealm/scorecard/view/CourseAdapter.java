@@ -45,8 +45,8 @@ public class CourseAdapter extends ArrayAdapter<Course> {
     	Course course = getCourse(position);
     	
     	((TextView) convertView.findViewById(R.id.list_course_name)).setText(course.getName());
-    	((TextView) convertView.findViewById(R.id.list_course_holes)).setText(course.getHoles());
-    	((TextView) convertView.findViewById(R.id.list_course_par)).setText(course.getTotalPar());
+    	((TextView) convertView.findViewById(R.id.list_course_holes)).setText("Holes: " + course.getHoles());
+    	((TextView) convertView.findViewById(R.id.list_course_par)).setText("Par: " + course.getTotalPar());
 
     	return convertView;
     }

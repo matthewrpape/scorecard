@@ -15,7 +15,7 @@
         style="@style/button_primary"
         android:layout_width="match_parent"
         android:layout_margin="@dimen/margin_size_small"
-        android:text="@string/new_player" />
+        android:text="@string/new_course" />
 
 	<ListView 
         android:id="@+id/courses_menu_course_list"

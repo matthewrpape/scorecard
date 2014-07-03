@@ -10,13 +10,8 @@
     <string name="players">Players</string>
     <string name="courses">Courses</string>
     <string name="scorecards">Old Scorecards</string>
-    
-    <!-- players menu -->
-    <string name="new_player">New Player</string>
-    
-    <!-- edit players menu -->
-    <string name="add_player">Add Player</string>
-    <string name="edit_player">Edit Player</string>
+
+    <!-- edit menus -->
     <string name="name">Name</string>
     <string name="save">Save</string>
 
@@ -25,8 +20,19 @@
     <string name="delete_message">Are you sure you wish to delete %s?</string>
     <string name="confirm_delete">Yes</string>
     <string name="cancel_delete">No</string>
-        
+
+    <!-- players menu -->
+    <string name="new_player">New Player</string>
+    
+    <!-- edit players menu -->
+    <string name="add_player">Add Player</string>
+    <string name="edit_player">Edit Player</string>
+
     <!-- course menu -->
     <string name="new_course">New Course</string>
+
+	<!-- edit course menu -->
+	<string name="add_course">Add Course</string>
+	<string name="edit_course">Edit Course</string>
 
 </resources>

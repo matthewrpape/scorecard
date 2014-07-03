@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/list_item_bg"
-    android:orientation="horizontal" >
+    android:orientation="vertical" >
 
     <TextView
         android:id="@+id/list_course_name"
@@ -24,11 +24,13 @@
         <TextView
             android:id="@+id/list_course_holes"
             style="@style/text_tertiary"
+            android:layout_weight="1"
             android:textColor="@color/blue" />
 
         <TextView
             android:id="@+id/list_course_par"
             style="@style/text_tertiary"
+            android:layout_weight="3"
             android:textColor="@color/blue" />
     </LinearLayout>
 

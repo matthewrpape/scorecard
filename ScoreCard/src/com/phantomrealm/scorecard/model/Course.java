@@ -27,13 +27,18 @@ public class Course {
 	}
 
 	public Course(String name, int[] pars) {
-		this(-1, name, pars);
+		this(0, name, pars);
 	}
 	
-	public Course(int id, String name, int[] pars) {
+	public Course(long id, String name, int[] pars) {
 		mId = id;
 		mName = name;
 		mPars = pars;
+	}
+	
+	// TODO - remove this function
+	public static Course createDebugCourse(long id, String name) {
+		return new Course(id, name, createDefaultPars(DEFAULT_HOLES));
 	}
 
 	public long getId() {

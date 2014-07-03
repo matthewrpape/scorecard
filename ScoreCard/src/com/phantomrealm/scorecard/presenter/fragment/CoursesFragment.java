@@ -19,11 +19,9 @@ import android.widget.ListView;
 
 import com.phantomrealm.scorecard.R;
 import com.phantomrealm.scorecard.model.Course;
-import com.phantomrealm.scorecard.model.Player;
-import com.phantomrealm.scorecard.model.db.PlayerEntryUtil;
-import com.phantomrealm.scorecard.presenter.activity.EditPlayerActivity;
+import com.phantomrealm.scorecard.model.db.CourseEntryUtil;
+import com.phantomrealm.scorecard.presenter.activity.EditCourseActivity;
 import com.phantomrealm.scorecard.view.CourseAdapter;
-import com.phantomrealm.scorecard.view.PlayerAdapter;
 
 public class CoursesFragment extends Fragment {
 
@@ -58,7 +56,7 @@ public class CoursesFragment extends Fragment {
 			}
 		});
 		
-		view.findViewById(R.id.player_menu_button_new_player).setOnClickListener(new OnClickListener() {
+		view.findViewById(R.id.courses_menu_button_new_course).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				launchEditCourseActivity();
@@ -121,7 +119,7 @@ public class CoursesFragment extends Fragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
             	// delete course
-            	CourseEntryUtil.getUtil().deletePlayer(course.getId());
+            	CourseEntryUtil.getUtil().deleteCourse(course.getId());
 
             	// update the list displayed to the user
         		populateCourseList();
