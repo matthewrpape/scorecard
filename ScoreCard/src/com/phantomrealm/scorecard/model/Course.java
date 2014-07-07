@@ -3,7 +3,7 @@ package com.phantomrealm.scorecard.model;
 public class Course {
 
 	public static final int DEFAULT_HOLES = 18;
-	private static final int DEFAULT_PAR = 3;
+	public static final int DEFAULT_PAR = 3;
 
 	private long mId;
 	private String mName;

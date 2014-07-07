@@ -56,7 +56,7 @@ public class EditCourseFragment extends Fragment {
 		if (mPars == null) {
 			mPars = Course.createDefaultPars(Course.DEFAULT_HOLES);
 		}
-		mNumberHolesField.setText(Integer.toString(mPars.length));
+		updateHoleCountDisplay(mPars.length);
 
 		ArrayList<Integer> parList = new ArrayList<Integer>(mPars.length);
 		for (int index = 0; index < mPars.length; ++index) {
@@ -66,17 +66,32 @@ public class EditCourseFragment extends Fragment {
 		mHolesListView = (ListView) view.findViewById(R.id.edit_course_menu_holes_list);
 		mHolesListView.setAdapter(mAdapter);
 
-		view.findViewById(R.id.edit_course_menu_increment_holes_button).setOnClickListener(new OnClickListener() {
+		final View decrementButton = view.findViewById(R.id.edit_course_menu_decrement_holes_button);
+		decrementButton.setEnabled(mAdapter.getCount() > 1);
+		decrementButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// TODO
+				mAdapter.removeHole();
+				
+				int holeCount = mAdapter.getCount();
+				updateHoleCountDisplay(holeCount);
+				if (holeCount == 1) {
+					decrementButton.setEnabled(false);
+				}
 			}
 		});
 
-		view.findViewById(R.id.edit_course_menu_decrement_holes_button).setOnClickListener(new OnClickListener() {
+		final View incrementButton = view.findViewById(R.id.edit_course_menu_increment_holes_button);
+		incrementButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// TODO
+				mAdapter.addHole();
+				
+				int holeCount = mAdapter.getCount();
+				updateHoleCountDisplay(holeCount);
+				if (holeCount == 2) {
+					decrementButton.setEnabled(true);
+				}
 			}
 		});
 
@@ -98,6 +113,10 @@ public class EditCourseFragment extends Fragment {
 		}
 		
 		getActivity().finish();
+	}
+
+	private void updateHoleCountDisplay(int size) {
+		mNumberHolesField.setText(Integer.toString(size));
 	}
 
 }
