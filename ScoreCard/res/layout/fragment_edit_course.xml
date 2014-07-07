@@ -30,9 +30,11 @@
         android:text="@string/holes_label" />
 
     <RelativeLayout
+        android:id="@+id/edit_course_menu_holes_control_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/edit_course_menu_holes_label"
+        android:layout_marginBottom="@dimen/margin_size_medium"
         android:layout_marginLeft="@dimen/margin_size_medium"
         android:layout_marginRight="@dimen/margin_size_medium" >
 
@@ -43,8 +45,8 @@
         <TextView
             android:id="@+id/edit_course_menu_decrement_holes_button"
             style="@style/button_primary"
-            android:layout_toLeftOf="@+id/edit_course_menu_increment_holes_button"
             android:layout_marginRight="@dimen/margin_size_medium"
+            android:layout_toLeftOf="@+id/edit_course_menu_increment_holes_button"
             android:text="@string/decrement" />
 
         <TextView
@@ -54,8 +56,17 @@
             android:text="@string/increment" />
     </RelativeLayout>
 
+    <ListView
+        android:id="@+id/edit_course_menu_holes_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/edit_course_menu_button_save"
+        android:layout_below="@id/edit_course_menu_holes_control_layout"
+        android:divider="@null"
+        android:dividerHeight="@dimen/edit_course_list_divider_height" />
+
     <TextView
-        android:id="@+id/edit_course_menu_button_save"
+        android:id="@id/edit_course_menu_button_save"
         style="@style/button_primary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

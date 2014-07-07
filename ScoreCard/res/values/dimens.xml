@@ -32,4 +32,9 @@
     <dimen name="text_view_stroke_width">@dimen/stroke_width</dimen>
     <dimen name="text_view_corner_radius">@dimen/small_corner_radius</dimen>
 
+	<!-- edit course view -->
+	<dimen name="edit_course_list_divider_height">4dp</dimen>
+	<dimen name="edit_course_list_view_height">48dp</dimen>
+	<dimen name="edit_course_list_view_label_width">64dp</dimen>
+
 </resources>

@@ -38,4 +38,8 @@
 	<string name="edit_course">Edit Course</string>
 	<string name="holes_label">Number of holes</string>
 
+	<!-- edit hole list item -->
+	<string name="hole_label">"Hole "</string>
+	<string name="par_label">Par</string>
+
 </resources>
