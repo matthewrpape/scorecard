@@ -27,6 +27,7 @@
         android:id="@+id/menu_button_new_game"
         style="@style/button_primary"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_size_small"
         android:text="@string/new_game" />
 
@@ -34,6 +35,7 @@
         android:id="@+id/menu_button_players"
         style="@style/button_primary"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_size_small"
         android:text="@string/players" />
 
@@ -41,6 +43,7 @@
         android:id="@+id/menu_button_courses"
         style="@style/button_primary"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_size_small"
         android:text="@string/courses" />
 
@@ -48,6 +51,7 @@
         android:id="@+id/menu_button_scorecards"
         style="@style/button_primary"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_size_small"
         android:text="@string/scorecards" />
 

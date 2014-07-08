@@ -15,6 +15,7 @@ public class DatabaseContract {
 	public static abstract class CourseEntry implements BaseColumns {
 		public static final String TABLE_NAME = "courses";
 		public static final String COLUMN_NAME = "course_name";
+		public static final String COLUMN_PARS = "course_pars";
 	}
 
 }

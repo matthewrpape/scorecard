@@ -27,6 +27,7 @@
         android:id="@+id/edit_player_menu_button_save"
         style="@style/button_primary"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_size_small"
         android:layout_alignParentBottom="true"
         android:text="@string/save" />

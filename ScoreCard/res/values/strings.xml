@@ -2,26 +2,44 @@
 
     <!-- app settings -->
     <string name="app_name">Scorecard</string>
-    <string name="version_name">0.0.1</string>
-    <string name="friendly_version_name">version 0.0.1</string>
+    <string name="version_name">0.0.2</string>
+    <string name="friendly_version_name">version 0.0.2</string>
 
     <!-- main menu -->
     <string name="new_game">New Game</string>
     <string name="players">Players</string>
     <string name="courses">Courses</string>
     <string name="scorecards">Old Scorecards</string>
-    
+
+    <!-- edit menus -->
+    <string name="name">Name</string>
+    <string name="save">Save</string>
+    <string name="increment">+</string>
+    <string name="decrement">-</string>
+
+	<!-- delete dialog -->
+	<string name="delete_title">Delete?</string>
+    <string name="delete_message">Are you sure you wish to delete %s?</string>
+    <string name="confirm_delete">Yes</string>
+    <string name="cancel_delete">No</string>
+
     <!-- players menu -->
     <string name="new_player">New Player</string>
     
     <!-- edit players menu -->
     <string name="add_player">Add Player</string>
     <string name="edit_player">Edit Player</string>
-    <string name="name">Name</string>
-    <string name="save">Save</string>
-    <string name="delete_title">Delete Player?</string>
-    <string name="delete_message">Are you sure you wish to delete %s?</string>
-    <string name="confirm_delete">Yes</string>
-    <string name="cancel_delete">No</string>
+
+    <!-- course menu -->
+    <string name="new_course">New Course</string>
+
+	<!-- edit course menu -->
+	<string name="add_course">Add Course</string>
+	<string name="edit_course">Edit Course</string>
+	<string name="holes_label">Number of holes</string>
+
+	<!-- edit hole list item -->
+	<string name="hole_label">"Hole "</string>
+	<string name="par_label">Par</string>
 
 </resources>

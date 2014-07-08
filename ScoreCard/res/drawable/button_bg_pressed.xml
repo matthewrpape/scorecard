@@ -1,5 +1,5 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <solid android:color="@color/button_bg_pressed" />
-    <stroke android:color="@color/button_bg_border_pressed" android:width="3dp"/>
-    <corners android:radius="7dp" />
+    <stroke android:color="@color/button_bg_border_pressed" android:width="@dimen/button_stroke_width"/>
+    <corners android:radius="@dimen/button_corner_radius" />
 </shape>

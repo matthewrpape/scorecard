@@ -23,4 +23,8 @@
 	<color name="list_item_bg_disabled">@color/dark_grey</color>
 	<color name="list_item_bg_pressed">@color/dark_blue</color>
 
+	<!-- text view -->
+	<color name="text_view_bg_enabled">@color/black</color>
+	<color name="text_view_bg_border_enabled">@color/blue</color>
+
 </resources>

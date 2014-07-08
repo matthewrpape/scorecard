@@ -25,6 +25,10 @@
             android:name="com.phantomrealm.scorecard.presenter.activity.PlayersActivity" />
         <activity
             android:name="com.phantomrealm.scorecard.presenter.activity.EditPlayerActivity" />
+        <activity
+            android:name="com.phantomrealm.scorecard.presenter.activity.CoursesActivity" />
+        <activity
+            android:name="com.phantomrealm.scorecard.presenter.activity.EditCourseActivity" />
     </application>
 
 </manifest>

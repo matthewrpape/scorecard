@@ -6,20 +6,20 @@
     android:orientation="vertical" >
 
     <TextView
-            android:id="@+id/player_menu_title_text_view"
+            android:id="@+id/courses_menu_title_text_view"
             style="@style/text_title"
-            android:text="@string/players" />
+            android:text="@string/courses" />
 
     <TextView
-        android:id="@+id/player_menu_button_new_player"
+        android:id="@+id/courses_menu_button_new_course"
         style="@style/button_primary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_size_small"
-        android:text="@string/new_player" />
+        android:text="@string/new_course" />
 
 	<ListView 
-        android:id="@+id/player_menu_player_list"
+        android:id="@+id/courses_menu_course_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:divider="@null"

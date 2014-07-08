@@ -1,0 +1,42 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fragmentContainer"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/edit_course_list_view_height" >
+
+    <LinearLayout
+        android:id="@+id/list_item_hole_label_layout"
+        android:layout_width="@dimen/edit_course_list_view_label_width"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/margin_size_medium"
+        android:layout_marginRight="@dimen/margin_size_medium"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/list_item_hole_number_text_view"
+            style="@style/text_secondary" />
+
+        <TextView
+            android:id="@+id/list_item_hole_par_text_view"
+            style="@style/text_secondary" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/list_item_hole_par_label"
+        style="@style/text_view_secondary"
+        android:layout_toRightOf="@id/list_item_hole_label_layout" />
+
+    <TextView
+        android:id="@+id/list_item_hole_decrease_par_button"
+        style="@style/button_primary"
+        android:layout_toLeftOf="@+id/list_item_hole_increase_par_button"
+        android:layout_marginRight="@dimen/margin_size_medium"
+        android:text="@string/decrement" />
+
+    <TextView
+        android:id="@id/list_item_hole_increase_par_button"
+        style="@style/button_primary"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/margin_size_medium"
+        android:text="@string/increment" />
+
+</RelativeLayout>
