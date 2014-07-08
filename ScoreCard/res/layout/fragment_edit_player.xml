@@ -6,8 +6,7 @@
 
     <TextView
             android:id="@+id/edit_player_menu_title_text_view"
-            style="@style/text_title"
-            android:text="@string/edit_player" />
+            style="@style/text_title" />
 
     <TextView
             android:id="@+id/edit_player_menu_name_text_view"

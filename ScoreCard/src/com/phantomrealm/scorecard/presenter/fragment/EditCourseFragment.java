@@ -47,6 +47,9 @@ public class EditCourseFragment extends Fragment {
 		Log.d(TAG, "onCreateView");
 		View view = inflater.inflate(R.layout.fragment_edit_course, container, false);
 
+		int titleTextId = mId == 0 ? R.string.add_course : R.string.edit_course;
+		((TextView) view.findViewById(R.id.edit_course_menu_title_text_view)).setText(titleTextId);
+
 		mNameField = (EditText) view.findViewById(R.id.edit_course_menu_name_edit_text);
 		if (mName != null) {
 			mNameField.setText(mName);
