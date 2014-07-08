@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.phantomrealm.scorecard.R;
 import com.phantomrealm.scorecard.model.db.PlayerEntryUtil;
@@ -34,6 +35,9 @@ public class EditPlayerFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		Log.d(TAG, "onCreateView");
 		View view = inflater.inflate(R.layout.fragment_edit_player, container, false);
+
+		int titleTextId = mId == 0 ? R.string.add_player : R.string.edit_player;
+		((TextView) view.findViewById(R.id.edit_player_menu_title_text_view)).setText(titleTextId);
 
 		final EditText editText = (EditText) view.findViewById(R.id.edit_player_menu_name_edit_text);
 		if (mName != null) {
