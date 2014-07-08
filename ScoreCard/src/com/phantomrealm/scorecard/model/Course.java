@@ -1,5 +1,8 @@
 package com.phantomrealm.scorecard.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Course {
 
 	public static final int DEFAULT_HOLES = 18;
@@ -7,13 +10,15 @@ public class Course {
 
 	private long mId;
 	private String mName;
-	private int[] mPars;
+	private List<Integer> mPars;
 
-	public static int[] createDefaultPars(int holes) {
-		int[] pars = new int[holes];
-		for (int i = 0; i < pars.length; ++i) {
-			pars[i] = DEFAULT_PAR;
+	public static List<Integer> createDefaultPars(int holes) {
+		ArrayList<Integer> pars = new ArrayList<Integer>(holes);
+		for (int i = 0; i < holes; ++i) {
+			pars.add(i, DEFAULT_PAR);
 		}
+		
+		System.out.println(pars.size());
 		
 		return pars;
 	}
@@ -26,21 +31,16 @@ public class Course {
 		this(name, createDefaultPars(holes));
 	}
 
-	public Course(String name, int[] pars) {
+	public Course(String name, List<Integer> pars) {
 		this(0, name, pars);
 	}
 	
-	public Course(long id, String name, int[] pars) {
+	public Course(long id, String name, List<Integer> pars) {
 		mId = id;
 		mName = name;
 		mPars = pars;
 	}
 	
-	// TODO - remove this function
-	public static Course createDebugCourse(long id, String name) {
-		return new Course(id, name, createDefaultPars(DEFAULT_HOLES));
-	}
-
 	public long getId() {
 		return mId;
 	}
@@ -50,11 +50,11 @@ public class Course {
 	}
 
 	public int getHoleCount() {
-		return mPars.length;
+		return mPars.size();
 	}
 
-	public int[] getParList() {
-		return mPars;
+	public ArrayList<Integer> getParList() {
+		return (ArrayList<Integer>) mPars;
 	}
 
 	public int getTotalPar() {

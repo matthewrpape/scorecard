@@ -2,8 +2,8 @@
 
     <!-- app settings -->
     <string name="app_name">Scorecard</string>
-    <string name="version_name">0.0.1</string>
-    <string name="friendly_version_name">version 0.0.1</string>
+    <string name="version_name">0.0.2</string>
+    <string name="friendly_version_name">version 0.0.2</string>
 
     <!-- main menu -->
     <string name="new_game">New Game</string>

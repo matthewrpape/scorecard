@@ -1,5 +1,7 @@
 package com.phantomrealm.scorecard.presenter.activity;
 
+import java.util.List;
+
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,18 +19,19 @@ public class EditCourseActivity extends AbstractSingleFragmentActivity {
 
 	private long mId;
 	private String mName;
-	private int[] mPars;
+	private List<Integer> mPars;
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		Intent intent = getIntent();
 		mId = intent.getLongExtra(CoursesFragment.INTENT_EXTRA_COURSE_ID_TAG, 0);
 		mName = intent.getStringExtra(CoursesFragment.INTENT_EXTRA_COURSE_NAME_TAG);
-		mPars = intent.getIntArrayExtra(CoursesFragment.INTENT_EXTRA_COURSE_PAR_TAG);
+		mPars = (List<Integer>) intent.getSerializableExtra(CoursesFragment.INTENT_EXTRA_COURSE_PAR_TAG);
 
 		super.onCreate(savedInstanceState);
 	}
-	
+
 	@Override
 	protected Fragment createFragment() {
 		return new EditCourseFragment(mId, mName, mPars);

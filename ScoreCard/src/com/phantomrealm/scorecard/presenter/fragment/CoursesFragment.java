@@ -94,7 +94,7 @@ public class CoursesFragment extends Fragment {
 		if (course != null) {
 			toLaunch.putExtra(INTENT_EXTRA_COURSE_ID_TAG, course.getId());
 			toLaunch.putExtra(INTENT_EXTRA_COURSE_NAME_TAG, course.getName());
-			toLaunch.putExtra(INTENT_EXTRA_COURSE_PAR_TAG, course.getParList());
+			toLaunch.putIntegerArrayListExtra(INTENT_EXTRA_COURSE_PAR_TAG, course.getParList());
 		}
 		
 		startActivity(toLaunch);

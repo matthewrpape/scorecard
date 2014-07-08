@@ -1,6 +1,6 @@
 package com.phantomrealm.scorecard.presenter.fragment;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -24,13 +24,13 @@ public class EditCourseFragment extends Fragment {
 	
 	private long mId;
 	private String mName;
-	private int[] mPars;
+	private List<Integer> mPars;
 	private EditText mNameField;
 	private TextView mNumberHolesField;
 	private HoleAdapter mAdapter;
 	private ListView mHolesListView;
 
-	public EditCourseFragment(long id, String name, int[] pars) {
+	public EditCourseFragment(long id, String name, List<Integer> pars) {
 		mId = id;
 		mName = name;
 		mPars = pars;
@@ -56,13 +56,9 @@ public class EditCourseFragment extends Fragment {
 		if (mPars == null) {
 			mPars = Course.createDefaultPars(Course.DEFAULT_HOLES);
 		}
-		updateHoleCountDisplay(mPars.length);
+		updateHoleCountDisplay(mPars.size());
 
-		ArrayList<Integer> parList = new ArrayList<Integer>(mPars.length);
-		for (int index = 0; index < mPars.length; ++index) {
-			parList.add(index, mPars[index]);
-		}
-		mAdapter = new HoleAdapter(getActivity(), R.layout.list_item_hole, R.id.list_item_hole_number_text_view, parList);
+		mAdapter = new HoleAdapter(getActivity(), R.layout.list_item_hole, R.id.list_item_hole_number_text_view, mPars);
 		mHolesListView = (ListView) view.findViewById(R.id.edit_course_menu_holes_list);
 		mHolesListView.setAdapter(mAdapter);
 
@@ -107,9 +103,9 @@ public class EditCourseFragment extends Fragment {
 
 	public void saveCourse(String courseName) {
 		if (mId > 0) {
-			CourseEntryUtil.getUtil().updateCourse(mId, courseName);
+			CourseEntryUtil.getUtil().updateCourse(mId, courseName, mPars);
 		} else {
-			CourseEntryUtil.getUtil().insertCourse(courseName);
+			CourseEntryUtil.getUtil().insertCourse(courseName, mPars);
 		}
 		
 		getActivity().finish();
