@@ -1,13 +1,16 @@
 package com.phantomrealm.scorecard.presenter.fragment;
 
-import com.phantomrealm.scorecard.R;
-
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+
+import com.phantomrealm.scorecard.R;
+import com.phantomrealm.scorecard.presenter.activity.PlayersActivity;
 
 public class MainFragment extends Fragment {
 
@@ -28,7 +31,22 @@ public class MainFragment extends Fragment {
 		Log.d(TAG, "onCreateView");
 		View view = inflater.inflate(R.layout.fragment_main, container, false);
 		
+		view.findViewById(R.id.menu_button_players).setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				launchPlayersActivity();
+			}
+		});
+		
 		return view;
+	}
+	
+	/**
+	 * Launch the activity for viewing existing players
+	 */
+	private void launchPlayersActivity() {
+		Intent toLaunch = new Intent(getActivity(), PlayersActivity.class);
+		startActivity(toLaunch);
 	}
 
 }

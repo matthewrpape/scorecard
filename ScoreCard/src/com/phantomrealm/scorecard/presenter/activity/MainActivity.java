@@ -1,8 +1,10 @@
 package com.phantomrealm.scorecard.presenter.activity;
 
 import android.app.Fragment;
+import android.os.Bundle;
 
 import com.phantomrealm.scorecard.R;
+import com.phantomrealm.scorecard.model.db.PlayerEntryUtil;
 import com.phantomrealm.scorecard.presenter.fragment.MainFragment;
 
 /**
@@ -11,6 +13,12 @@ import com.phantomrealm.scorecard.presenter.fragment.MainFragment;
  * @author mpape
  */
 public class MainActivity extends AbstractSingleFragmentActivity {
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		PlayerEntryUtil.initializeInstance(this);
+	}
 
 	@Override
 	protected Fragment createFragment() {
