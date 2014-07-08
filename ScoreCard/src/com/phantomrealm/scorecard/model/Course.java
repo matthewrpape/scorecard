@@ -17,9 +17,7 @@ public class Course {
 		for (int i = 0; i < holes; ++i) {
 			pars.add(i, DEFAULT_PAR);
 		}
-		
-		System.out.println(pars.size());
-		
+
 		return pars;
 	}
 	
