@@ -26,9 +26,13 @@
         <activity
             android:name="com.phantomrealm.scorecard.presenter.activity.EditPlayerActivity" />
         <activity
+            android:name="com.phantomrealm.scorecard.presenter.activity.ChoosePlayersActivity" />
+        <activity
             android:name="com.phantomrealm.scorecard.presenter.activity.CoursesActivity" />
         <activity
             android:name="com.phantomrealm.scorecard.presenter.activity.EditCourseActivity" />
+        <activity
+            android:name="com.phantomrealm.scorecard.presenter.activity.ChooseCourseActivity" />
     </application>
 
 </manifest>

@@ -10,6 +10,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
 import com.phantomrealm.scorecard.R;
+import com.phantomrealm.scorecard.presenter.activity.ChooseCourseActivity;
 import com.phantomrealm.scorecard.presenter.activity.CoursesActivity;
 import com.phantomrealm.scorecard.presenter.activity.PlayersActivity;
 
@@ -26,12 +27,19 @@ public class MainFragment extends Fragment {
 			Log.d(TAG, "onCreate from saved instance");
 		}
 	}
-	
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		Log.d(TAG, "onCreateView");
 		View view = inflater.inflate(R.layout.fragment_main, container, false);
-		
+
+		view.findViewById(R.id.menu_button_new_game).setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				launchChooseCourseActivity();
+			}
+		});
+
 		view.findViewById(R.id.menu_button_players).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -48,7 +56,15 @@ public class MainFragment extends Fragment {
 		
 		return view;
 	}
-	
+
+	/**
+	 * Launch the activity for viewing choosing a course to use in a new game
+	 */
+	private void launchChooseCourseActivity() {
+		Intent toLaunch = new Intent(getActivity(), ChooseCourseActivity.class);
+		startActivity(toLaunch);
+	}
+
 	/**
 	 * Launch the activity for viewing existing players
 	 */
