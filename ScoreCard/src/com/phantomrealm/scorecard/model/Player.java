@@ -18,4 +18,11 @@ public class Player {
 		return mName;
 	}
 
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Player " + mId + ": " + mName);
+		
+		return builder.toString();
+	}
 }
