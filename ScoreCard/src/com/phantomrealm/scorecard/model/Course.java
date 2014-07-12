@@ -64,4 +64,14 @@ public class Course {
 		return totalPar;
 	}
 
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Course " + mId + ": " + mName);
+		for (int i = 0; i < mPars.size(); ++i) {
+			builder.append(" hole " + (i + 1) + " par: " + mPars.get(i));
+		}
+
+		return builder.toString();
+	}
 }

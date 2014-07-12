@@ -1,0 +1,28 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fragmentContainer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/choose_courses_menu_title_text_view"
+        style="@style/text_title"
+        android:text="@string/choose_course" />
+
+    <TextView
+        android:id="@+id/choose_courses_menu_button_new_course"
+        style="@style/button_primary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_size_small"
+        android:text="@string/new_course" />
+
+    <ListView
+        android:id="@+id/choose_courses_menu_course_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="@null"
+        android:dividerHeight="@dimen/list_view_divider_height" />
+
+</LinearLayout>

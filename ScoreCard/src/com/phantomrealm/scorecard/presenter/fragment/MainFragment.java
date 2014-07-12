@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import com.phantomrealm.scorecard.R;
 import com.phantomrealm.scorecard.presenter.activity.CoursesActivity;
+import com.phantomrealm.scorecard.presenter.activity.NewGameActivity;
 import com.phantomrealm.scorecard.presenter.activity.PlayersActivity;
 
 public class MainFragment extends Fragment {
@@ -26,12 +27,19 @@ public class MainFragment extends Fragment {
 			Log.d(TAG, "onCreate from saved instance");
 		}
 	}
-	
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		Log.d(TAG, "onCreateView");
 		View view = inflater.inflate(R.layout.fragment_main, container, false);
-		
+
+		view.findViewById(R.id.menu_button_new_game).setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				launchNewGameActivity();
+			}
+		});
+
 		view.findViewById(R.id.menu_button_players).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -48,7 +56,15 @@ public class MainFragment extends Fragment {
 		
 		return view;
 	}
-	
+
+	/**
+	 * Launch the activity for setting up and launching a new game
+	 */
+	private void launchNewGameActivity() {
+		Intent toLaunch = new Intent(getActivity(), NewGameActivity.class);
+		startActivity(toLaunch);
+	}
+
 	/**
 	 * Launch the activity for viewing existing players
 	 */

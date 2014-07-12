@@ -2,8 +2,11 @@
 
     <!-- app settings -->
     <string name="app_name">Scorecard</string>
-    <string name="version_name">0.0.2</string>
-    <string name="friendly_version_name">version 0.0.2</string>
+    <string name="version_name">0.0.3</string>
+    <string name="friendly_version_name">version 0.0.3</string>
+
+    <!-- loading screen -->
+    <string name="loading">Loading…</string>
 
     <!-- main menu -->
     <string name="new_game">New Game</string>
@@ -30,6 +33,10 @@
     <string name="add_player">Add Player</string>
     <string name="edit_player">Edit Player</string>
 
+    <!-- choose players menu -->
+    <string name="choose_players">Select Players</string>
+    <string name="start_game">Start Game</string>
+
     <!-- course menu -->
     <string name="new_course">New Course</string>
 
@@ -37,6 +44,9 @@
 	<string name="add_course">Add Course</string>
 	<string name="edit_course">Edit Course</string>
 	<string name="holes_label">Number of holes</string>
+	
+	<!-- choose course menu -->
+	<string name="choose_course">Select Course</string>
 
 	<!-- edit hole list item -->
 	<string name="hole_label">"Hole "</string>
