@@ -21,7 +21,7 @@ import com.phantomrealm.scorecard.R;
 import com.phantomrealm.scorecard.model.Player;
 import com.phantomrealm.scorecard.model.db.PlayerEntryUtil;
 import com.phantomrealm.scorecard.presenter.activity.EditPlayerActivity;
-import com.phantomrealm.scorecard.view.PlayerAdapter;
+import com.phantomrealm.scorecard.view.listadapters.PlayerAdapter;
 
 public class PlayersFragment extends Fragment {
 

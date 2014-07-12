@@ -20,9 +20,10 @@ public class Player {
 
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("Player " + mId + ": " + mName);
-		
-		return builder.toString();
+		return new StringBuilder().append("Player ")
+								  .append(mId)
+		                          .append(": ")
+		                          .append(mName)
+		                          .toString();
 	}
 }

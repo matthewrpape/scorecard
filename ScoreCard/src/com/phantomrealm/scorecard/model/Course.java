@@ -67,7 +67,10 @@ public class Course {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Course " + mId + ": " + mName);
+		builder.append("Course ")
+		       .append(mId)
+		       .append(": ")
+		       .append(mName);
 		for (int i = 0; i < mPars.size(); ++i) {
 			builder.append(" hole " + (i + 1) + " par: " + mPars.get(i));
 		}

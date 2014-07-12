@@ -21,7 +21,7 @@ import com.phantomrealm.scorecard.R;
 import com.phantomrealm.scorecard.model.Course;
 import com.phantomrealm.scorecard.model.db.CourseEntryUtil;
 import com.phantomrealm.scorecard.presenter.activity.EditCourseActivity;
-import com.phantomrealm.scorecard.view.CourseAdapter;
+import com.phantomrealm.scorecard.view.listadapters.CourseAdapter;
 
 public class CoursesFragment extends Fragment {
 

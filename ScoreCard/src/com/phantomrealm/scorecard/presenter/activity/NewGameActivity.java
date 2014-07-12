@@ -10,6 +10,7 @@ import android.os.Bundle;
 import com.phantomrealm.scorecard.R;
 import com.phantomrealm.scorecard.model.Course;
 import com.phantomrealm.scorecard.model.Player;
+import com.phantomrealm.scorecard.model.Scorecard;
 import com.phantomrealm.scorecard.presenter.fragment.ChoosePlayersFragment;
 import com.phantomrealm.scorecard.presenter.fragment.CoursesFragment;
 
@@ -59,10 +60,12 @@ public class NewGameActivity extends Activity {
 	}
 
 	private void launchScorecardActivity() {
-		System.out.println(mCourse);
-		for (Player player : mPlayers) {
-			System.out.println(player);
-		}
+		// TODO - finish this
+		Scorecard scorecard = new Scorecard(mCourse, mPlayers);
+		System.out.println(scorecard);
+		
+		Intent toLaunch = new Intent(this, ScorecardActivity.class);
+		startActivity(toLaunch);
 	}
 
 	private void handleChooseCourseResult(int resultCode, Intent data) {
