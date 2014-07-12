@@ -6,7 +6,7 @@ import com.phantomrealm.scorecard.R;
 import com.phantomrealm.scorecard.presenter.fragment.ChoosePlayersFragment;
 
 /**
- * Activity used to view existing players
+ * Activity used to select one or more players
  * 
  * @author mpape
  */

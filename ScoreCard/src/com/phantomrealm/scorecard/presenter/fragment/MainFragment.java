@@ -10,8 +10,8 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
 import com.phantomrealm.scorecard.R;
-import com.phantomrealm.scorecard.presenter.activity.ChooseCourseActivity;
 import com.phantomrealm.scorecard.presenter.activity.CoursesActivity;
+import com.phantomrealm.scorecard.presenter.activity.NewGameActivity;
 import com.phantomrealm.scorecard.presenter.activity.PlayersActivity;
 
 public class MainFragment extends Fragment {
@@ -36,7 +36,7 @@ public class MainFragment extends Fragment {
 		view.findViewById(R.id.menu_button_new_game).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				launchChooseCourseActivity();
+				launchNewGameActivity();
 			}
 		});
 
@@ -58,10 +58,10 @@ public class MainFragment extends Fragment {
 	}
 
 	/**
-	 * Launch the activity for viewing choosing a course to use in a new game
+	 * Launch the activity for setting up and launching a new game
 	 */
-	private void launchChooseCourseActivity() {
-		Intent toLaunch = new Intent(getActivity(), ChooseCourseActivity.class);
+	private void launchNewGameActivity() {
+		Intent toLaunch = new Intent(getActivity(), NewGameActivity.class);
 		startActivity(toLaunch);
 	}
 

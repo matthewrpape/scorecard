@@ -2,9 +2,8 @@ package com.phantomrealm.scorecard.presenter.fragment;
 
 import java.util.List;
 
-import android.app.AlertDialog;
+import android.app.Activity;
 import android.app.Fragment;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,13 +13,11 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 
 import com.phantomrealm.scorecard.R;
 import com.phantomrealm.scorecard.model.Course;
 import com.phantomrealm.scorecard.model.db.CourseEntryUtil;
-import com.phantomrealm.scorecard.presenter.activity.ChoosePlayersActivity;
 import com.phantomrealm.scorecard.presenter.activity.EditCourseActivity;
 import com.phantomrealm.scorecard.view.CourseAdapter;
 
@@ -46,14 +43,7 @@ public class ChooseCourseFragment extends Fragment {
 		mListView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				launchChoosePlayersActivity(mAdapter.getCourse(position));
-			}
-		});
-		mListView.setOnItemLongClickListener(new OnItemLongClickListener() {
-			@Override
-			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-				promptToDelete(mAdapter.getCourse(position));
-				return true;
+				selectCourse(mAdapter.getCourse(position));
 			}
 		});
 
@@ -84,13 +74,14 @@ public class ChooseCourseFragment extends Fragment {
 		startActivity(toLaunch);
 	}
 
-	private void launchChoosePlayersActivity(Course selectedCourse) {
-		Intent toLaunch = new Intent(getActivity(), ChoosePlayersActivity.class);
-		toLaunch.putExtra(CoursesFragment.INTENT_EXTRA_COURSE_ID_TAG, selectedCourse.getId());
-		toLaunch.putExtra(CoursesFragment.INTENT_EXTRA_COURSE_NAME_TAG, selectedCourse.getName());
-		toLaunch.putIntegerArrayListExtra(CoursesFragment.INTENT_EXTRA_COURSE_PAR_TAG, selectedCourse.getParList());
-		
-		startActivity(toLaunch);
+	private void selectCourse(Course selectedCourse) {
+		Intent result = new Intent();
+		result.putExtra(CoursesFragment.INTENT_EXTRA_COURSE_ID_TAG, selectedCourse.getId());
+		result.putExtra(CoursesFragment.INTENT_EXTRA_COURSE_NAME_TAG, selectedCourse.getName());
+		result.putIntegerArrayListExtra(CoursesFragment.INTENT_EXTRA_COURSE_PAR_TAG, selectedCourse.getParList());
+		getActivity().setResult(Activity.RESULT_OK, result);
+
+		getActivity().finish();
 	}
 
 	/**
@@ -101,29 +92,6 @@ public class ChooseCourseFragment extends Fragment {
 		
 		mAdapter = new CourseAdapter(getActivity(), R.layout.list_item_course, R.id.list_course_name, courses);
 		mListView.setAdapter(mAdapter);
-	}
-
-	/**
-	 * Display a dialogue asking the user if they wish to delete a given {@link Course}
-	 * @param player
-	 */
-	private void promptToDelete(final Course course) {
-		new AlertDialog.Builder(getActivity())
-        .setIcon(android.R.drawable.ic_dialog_alert)
-        .setTitle(R.string.delete_title)
-        .setMessage(getString(R.string.delete_message, course.getName()))
-        .setPositiveButton(R.string.confirm_delete, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-            	// delete course
-            	CourseEntryUtil.getUtil().deleteCourse(course.getId());
-
-            	// update the list displayed to the user
-        		populateCourseList();
-            }
-        })
-        .setNegativeButton(R.string.cancel_delete, null)
-        .show();
 	}
 
 }

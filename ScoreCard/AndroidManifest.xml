@@ -22,6 +22,8 @@
             </intent-filter>
         </activity>
         <activity
+            android:name="com.phantomrealm.scorecard.presenter.activity.NewGameActivity" />
+        <activity
             android:name="com.phantomrealm.scorecard.presenter.activity.PlayersActivity" />
         <activity
             android:name="com.phantomrealm.scorecard.presenter.activity.EditPlayerActivity" />

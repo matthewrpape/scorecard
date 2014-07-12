@@ -3,6 +3,7 @@ package com.phantomrealm.scorecard.presenter.fragment;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,8 +24,10 @@ import com.phantomrealm.scorecard.view.PlayerAdapter;
 
 public class ChoosePlayersFragment extends Fragment {
 
+	public static final String INTENT_EXTRA_PLAYER_ID_LIST = "intent_extra_player_ids";
+	public static final String INTENT_EXTRA_PLAYER_NAME_LIST = "intent_extra_player_names";
 	private static final String TAG = ChoosePlayersFragment.class.getSimpleName();
-	
+
 	private ListView mListView;
 	private PlayerAdapter mAdapter;
 	private List<Player> mPlayers;
@@ -60,7 +63,7 @@ public class ChoosePlayersFragment extends Fragment {
 		mStartButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// TODO - start game?
+				selectPlayers();
 			}
 		});
 
@@ -132,6 +135,22 @@ public class ChoosePlayersFragment extends Fragment {
 		Intent toLaunch = new Intent(getActivity(), EditPlayerActivity.class);
 		
 		startActivity(toLaunch);
+	}
+
+	private void selectPlayers() {
+		ArrayList<Integer> playerIds = new ArrayList<Integer>();
+		ArrayList<String> playerNames = new ArrayList<String>();
+		for (Player player : mPlayers) {
+			playerIds.add(((Long) player.getId()).intValue());
+			playerNames.add(player.getName());
+		}
+
+		Intent result = new Intent();
+		result.putIntegerArrayListExtra(INTENT_EXTRA_PLAYER_ID_LIST, playerIds);
+		result.putStringArrayListExtra(INTENT_EXTRA_PLAYER_NAME_LIST, playerNames);
+		getActivity().setResult(Activity.RESULT_OK, result);
+
+		getActivity().finish();
 	}
 
 	/**
