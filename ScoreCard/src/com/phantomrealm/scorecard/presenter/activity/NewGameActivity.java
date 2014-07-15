@@ -1,6 +1,5 @@
 package com.phantomrealm.scorecard.presenter.activity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
@@ -8,9 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.phantomrealm.scorecard.R;
-import com.phantomrealm.scorecard.model.Course;
-import com.phantomrealm.scorecard.model.Player;
-import com.phantomrealm.scorecard.model.Scorecard;
 import com.phantomrealm.scorecard.presenter.fragment.ChoosePlayersFragment;
 import com.phantomrealm.scorecard.presenter.fragment.CoursesFragment;
 
@@ -24,8 +20,11 @@ public class NewGameActivity extends Activity {
 	private static final int CHOOSE_COURSE_REQUEST_CODE = 101;
 	private static final int CHOOSE_PLAYERS_REQUEST_CODE = 102;
 
-	private Course mCourse;
-	private List<Player> mPlayers;
+	private long mCourseId;
+	private String mCourseName;
+	private List<Integer> mCoursePars;
+	private List<Integer> mPlayerIds;
+	private List<String> mPlayerNames;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -60,21 +59,16 @@ public class NewGameActivity extends Activity {
 	}
 
 	private void launchScorecardActivity() {
-		// TODO - finish this
-		Scorecard scorecard = new Scorecard(mCourse, mPlayers);
-		System.out.println(scorecard);
-		
-		Intent toLaunch = new Intent(this, ScorecardActivity.class);
+		Intent toLaunch = ScorecardActivity.makeIntent(this, mCourseId, mCourseName, mCoursePars, mPlayerIds, mPlayerNames);
 		startActivity(toLaunch);
 	}
 
 	private void handleChooseCourseResult(int resultCode, Intent data) {
 		switch (resultCode) {
 		case Activity.RESULT_OK:
-			long courseId = data.getLongExtra(CoursesFragment.INTENT_EXTRA_COURSE_ID_TAG, 0);
-			String courseName = data.getStringExtra(CoursesFragment.INTENT_EXTRA_COURSE_NAME_TAG);
-			List<Integer> coursePars = data.getIntegerArrayListExtra(CoursesFragment.INTENT_EXTRA_COURSE_PAR_TAG);
-			mCourse = new Course(courseId, courseName, coursePars);
+			mCourseId = data.getLongExtra(CoursesFragment.INTENT_EXTRA_COURSE_ID_TAG, 0);
+			mCourseName = data.getStringExtra(CoursesFragment.INTENT_EXTRA_COURSE_NAME_TAG);
+			mCoursePars = data.getIntegerArrayListExtra(CoursesFragment.INTENT_EXTRA_COURSE_PAR_TAG);
 
 			launchChoosePlayersActivity();
 			break;
@@ -87,12 +81,8 @@ public class NewGameActivity extends Activity {
 	private void handleChoosePlayersResult(int resultCode, Intent data) {
 		switch (resultCode) {
 		case Activity.RESULT_OK:
-			mPlayers = new ArrayList<Player>();
-			List<Integer> playerIds = data.getIntegerArrayListExtra(ChoosePlayersFragment.INTENT_EXTRA_PLAYER_ID_LIST);
-			List<String> playerNames = data.getStringArrayListExtra(ChoosePlayersFragment.INTENT_EXTRA_PLAYER_NAME_LIST);
-			for (int i = 0; i < playerIds.size(); ++i) {
-				mPlayers.add(new Player(playerIds.get(i), playerNames.get(i)));
-			}
+			mPlayerIds = data.getIntegerArrayListExtra(ChoosePlayersFragment.INTENT_EXTRA_PLAYER_ID_LIST);
+			mPlayerNames = data.getStringArrayListExtra(ChoosePlayersFragment.INTENT_EXTRA_PLAYER_NAME_LIST);
 
 			launchScorecardActivity();
 			break;
