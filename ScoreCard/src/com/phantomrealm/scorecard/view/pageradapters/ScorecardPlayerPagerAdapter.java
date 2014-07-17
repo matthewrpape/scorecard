@@ -1,6 +1,8 @@
 package com.phantomrealm.scorecard.view.pageradapters;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
@@ -17,10 +19,16 @@ public class ScorecardPlayerPagerAdapter extends PagerAdapter {
 
 	private List<Player> mPlayers;
 	private List<Integer> mPars;
+	private int mParTotal;
+	private Map<Player, List<Integer>> mPlayerScores;
+	private Map<Player, List<Integer>> mPlayerAverages;
 
-	public ScorecardPlayerPagerAdapter(List<Player> players, List<Integer> pars) {
+	public ScorecardPlayerPagerAdapter(List<Player> players, List<Integer> pars, Map<Player, List<Integer>> playerScores, Map<Player, List<Integer>> playerAverages) {
 		mPlayers = players;
 		mPars = pars;
+		mParTotal = totalPars(mPars);
+		mPlayerScores = playerScores;
+		mPlayerAverages = playerAverages;
 	}
 
 	@Override
@@ -29,13 +37,13 @@ public class ScorecardPlayerPagerAdapter extends PagerAdapter {
 	}
 
 	@Override
-	public boolean isViewFromObject(View arg0, Object arg1) {
-		return arg0 == ((View)arg1);
+	public boolean isViewFromObject(View view, Object object) {
+		return view == ((View) object);
 	}
 
 	@Override
-	public void destroyItem(View arg0, int arg1, Object arg2) {
-		((ViewPager)arg0).removeView((View)arg2);
+	public void destroyItem(View view, int integer, Object object) {
+		((ViewPager)view).removeView((View)object);
 	}
 
 	@Override
@@ -43,12 +51,52 @@ public class ScorecardPlayerPagerAdapter extends PagerAdapter {
 		Context pagerContext = collection.getContext();
 		ViewPager pager = (ViewPager) collection;
 
+		List<Integer> scores = createScoresList();
+		List<Integer> averages = createAveragesList(position);
+
 		ListView playerListView = (ListView) LayoutInflater.from(collection.getContext()).inflate(R.layout.view_scorecard_player_list, null);
-		ScorecardPlayerAdapter listAdapter = new ScorecardPlayerAdapter(pagerContext, R.id.scorecard_player_list, mPlayers, null, null);
+		ScorecardPlayerAdapter listAdapter = new ScorecardPlayerAdapter(pagerContext, R.id.scorecard_player_list, mPlayers, scores, averages);
 		playerListView.setAdapter(listAdapter);
 
 		pager.addView(playerListView, 0);
 		return playerListView;
+	}
+
+	private int totalPars(List<Integer> pars) {
+		int total = 0;
+		for (Integer par : pars) {
+			total += par;
+		}
+
+		return total;
+	}
+
+	/**
+	 * Creates a list of scores (one for each player) representing the difference between their combined score for
+	 *  the entire course, and par for the entire course.
+	 * @return
+	 */
+	private List<Integer> createScoresList() {
+		List<Integer> totals = new ArrayList<Integer>();
+		for (Player player : mPlayers) {
+			int total = 0;
+			for (Integer score : mPlayerScores.get(player)) {
+				total += score;
+			}
+			total -= mParTotal;
+			totals.add(total);
+		}
+
+		return totals;
+	}
+
+	private List<Integer> createAveragesList(int holeIndex) {
+		List<Integer> averages = new ArrayList<Integer>();
+		for (Player player : mPlayers) {
+			averages.add(mPlayerAverages.get(player).get(holeIndex));
+		}
+
+		return averages;
 	}
 
 }

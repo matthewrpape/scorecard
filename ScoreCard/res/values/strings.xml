@@ -57,4 +57,5 @@
 	<string name="scorecard_par_label">"Par "</string>
 	<string name="average">"Avg: "</string>
 	<string name="total">"Total: "</string>
+	<string name="no_average">N/A</string>
 </resources>

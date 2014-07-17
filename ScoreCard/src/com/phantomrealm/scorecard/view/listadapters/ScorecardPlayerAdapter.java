@@ -14,14 +14,22 @@ import com.phantomrealm.scorecard.view.ScorecardPlayerView;
 public class ScorecardPlayerAdapter extends ArrayAdapter<Player> {
 
 	private List<Player> mPlayers;
-	private List<Integer> mTotals; // total score of each player for the course
+	private List<Integer> mScores; // total score (difference from par) of each player for the course
 	private List<Integer> mAverages; // average score of each player for the hole
 
-    public ScorecardPlayerAdapter(Context context, int resource, List<Player> players, List<Integer> totals, List<Integer> averages) {
+	/**
+	 * 
+	 * @param context
+	 * @param resource
+	 * @param players
+	 * @param scores total score (difference form par) of each player for the course
+	 * @param averages
+	 */
+    public ScorecardPlayerAdapter(Context context, int resource, List<Player> players, List<Integer> scores, List<Integer> averages) {
 		super(context, resource);
 
 		mPlayers = players;
-		mTotals = totals;
+		mScores = scores;
 		mAverages = averages;
 	}
 
@@ -33,12 +41,13 @@ public class ScorecardPlayerAdapter extends ArrayAdapter<Player> {
     @SuppressLint("InflateParams")
 	public View getView(int position, View convertView, ViewGroup parent) {
     	if (convertView == null) {
-    		convertView = new ScorecardPlayerView(getContext(), mPlayers.get(position));
+    		convertView = new ScorecardPlayerView(getContext(), mPlayers.get(position), mScores.get(position), mAverages.get(position));
     	} else {
     		((ScorecardPlayerView)convertView).setPlayer(mPlayers.get(position));
+    		((ScorecardPlayerView)convertView).setTotal(mScores.get(position));
+    		((ScorecardPlayerView)convertView).setAverage(mAverages.get(position));
     	}
 
-    	// TODO - set total and average on convertView
     	return convertView;
     }
 

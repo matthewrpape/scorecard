@@ -1,5 +1,10 @@
 package com.phantomrealm.scorecard.presenter.fragment;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -12,6 +17,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.phantomrealm.scorecard.R;
+import com.phantomrealm.scorecard.model.Course;
+import com.phantomrealm.scorecard.model.Player;
 import com.phantomrealm.scorecard.model.Scorecard;
 import com.phantomrealm.scorecard.view.pageradapters.ScorecardPlayerPagerAdapter;
 
@@ -34,7 +41,7 @@ public class ScorecardFragment extends Fragment {
 		Log.d(TAG, "onCreate");
 		super.onCreate(savedInstanceState);
 	}
-	
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		Log.d(TAG, "onCreateView");
@@ -52,10 +59,12 @@ public class ScorecardFragment extends Fragment {
 	}
 
 	private void setupScorecardPager() {
-		mAdapter = new ScorecardPlayerPagerAdapter(mScorecard.getPlayers(), mScorecard.getCourse().getParList());
+		Map<Player, List<Integer>> playerScores = getPlayerScores(mScorecard.getPlayers(), mScorecard.getCourse());
+		Map<Player, List<Integer>> playerAverages = getPlayerAverages(mScorecard.getPlayers(), mScorecard.getCourse());
+		mAdapter = new ScorecardPlayerPagerAdapter(mScorecard.getPlayers(), mScorecard.getCourse().getParList(), playerScores, playerAverages);
 		mViewPager.setAdapter(mAdapter);
 
-		mViewPager.setOnPageChangeListener(new OnPageChangeListener() {            
+		mViewPager.setOnPageChangeListener(new OnPageChangeListener() {
 		    @Override
 		    public void onPageSelected(int position) {
 		    	setLabelsForHole(position);
@@ -93,4 +102,47 @@ public class ScorecardFragment extends Fragment {
 			}
 		});
 	}
+
+	// TODO - load from db
+	private Map<Player, List<Integer>> getPlayerScores(List<Player> players, Course course) {
+		Map<Player, List<Integer>> playerTotals = new HashMap<Player, List<Integer>>();
+		for (Player player: players) {
+			List<Integer> scores = getPlayerScoresForCourse(player, course);
+			playerTotals.put(player, scores);
+		}
+
+		return playerTotals;
+	}
+
+	// TODO - load from db
+	private List<Integer> getPlayerScoresForCourse(Player player, Course course) {
+		List<Integer> scores = new ArrayList<Integer>();
+		for (Integer par : course.getParList()) {
+			scores.add(par);
+		}
+
+		return scores;
+	}
+
+	// TODO - load from db
+	private Map<Player, List<Integer>> getPlayerAverages(List<Player> players, Course course) {
+		Map<Player, List<Integer>> playerAverages = new HashMap<Player, List<Integer>>();
+		for (Player player : players) {
+			List<Integer> averages = getPlayerAveragesForCourse(player, course);
+			playerAverages.put(player, averages);
+		}
+
+		return playerAverages;
+	}
+
+	// TODO - load from db
+	private List<Integer> getPlayerAveragesForCourse(Player player, Course course) {
+		List<Integer> averages = new ArrayList<Integer>();
+		for (int i = 0; i < course.getHoleCount(); ++i) {
+			averages.add(null);
+		}
+
+		return averages;
+	}
+
 }
