@@ -14,6 +14,7 @@ import android.widget.ListView;
 import com.phantomrealm.scorecard.R;
 import com.phantomrealm.scorecard.model.Player;
 import com.phantomrealm.scorecard.view.listadapters.ScorecardPlayerAdapter;
+import com.phantomrealm.scorecard.view.listadapters.ScorecardPlayerAdapter.ScoreAdjustmentListener;
 
 public class ScorecardPlayerPagerAdapter extends PagerAdapter {
 
@@ -51,11 +52,19 @@ public class ScorecardPlayerPagerAdapter extends PagerAdapter {
 		Context pagerContext = collection.getContext();
 		ViewPager pager = (ViewPager) collection;
 
-		List<Integer> scores = createScoresList();
-		List<Integer> averages = createAveragesList(position);
+		List<Integer> holeScores = createHoleScores(position);
+		List<Integer> courseScoreDifferentials = createCourseScoreDifferentialsList();
+		List<Integer> holeAverages = createAveragesList(position);
 
 		ListView playerListView = (ListView) LayoutInflater.from(collection.getContext()).inflate(R.layout.view_scorecard_player_list, null);
-		ScorecardPlayerAdapter listAdapter = new ScorecardPlayerAdapter(pagerContext, R.id.scorecard_player_list, mPlayers, scores, averages);
+		ScorecardPlayerAdapter listAdapter = new ScorecardPlayerAdapter(pagerContext, R.id.scorecard_player_list, position, mPlayers,
+				holeScores, courseScoreDifferentials, holeAverages, new ScoreAdjustmentListener() {
+					@Override
+					public void adjustScore(int holeIndex, Player player, int adjustment) {
+						// TODO - make this work
+						System.out.println("adjust score at hole: " + (holeIndex + 1) + " for player: " + player.getName() + " by: " + adjustment);
+					}
+				});
 		playerListView.setAdapter(listAdapter);
 
 		pager.addView(playerListView, 0);
@@ -71,23 +80,32 @@ public class ScorecardPlayerPagerAdapter extends PagerAdapter {
 		return total;
 	}
 
+	private List<Integer> createHoleScores(int holeIndex) {
+		List<Integer> holeScores = new ArrayList<Integer>();
+		for (Player player : mPlayers) {
+			holeScores.add(mPlayerScores.get(player).get(holeIndex));
+		}
+
+		return holeScores;
+	}
+
 	/**
 	 * Creates a list of scores (one for each player) representing the difference between their combined score for
 	 *  the entire course, and par for the entire course.
 	 * @return
 	 */
-	private List<Integer> createScoresList() {
-		List<Integer> totals = new ArrayList<Integer>();
+	private List<Integer> createCourseScoreDifferentialsList() {
+		List<Integer> courseScores = new ArrayList<Integer>();
 		for (Player player : mPlayers) {
 			int total = 0;
 			for (Integer score : mPlayerScores.get(player)) {
 				total += score;
 			}
 			total -= mParTotal;
-			totals.add(total);
+			courseScores.add(total);
 		}
 
-		return totals;
+		return courseScores;
 	}
 
 	private List<Integer> createAveragesList(int holeIndex) {
