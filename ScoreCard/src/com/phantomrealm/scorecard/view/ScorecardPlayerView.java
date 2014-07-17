@@ -17,9 +17,9 @@ public class ScorecardPlayerView extends RelativeLayout {
 		public void adjustScore(Player player, int adjustment);
 	}
 
-	private class EmptyPlayerScoreAdjustmentListener implements PlayerScoreAdjustmentListener {
+	private static final PlayerScoreAdjustmentListener EMPTY_LISTENER = new PlayerScoreAdjustmentListener() {
 		@Override public void adjustScore(Player player, int adjustment) { }
-	}
+	};
 
 	public static class Builder {
 		private Player player;
@@ -75,6 +75,7 @@ public class ScorecardPlayerView extends RelativeLayout {
 
 	public void setHoleScore(Integer score) {
 		((TextView) findViewById(R.id.view_scorecard_player_hole_score_label)).setText(String.valueOf(score));
+		findViewById(R.id.view_scorecard_player_decrease_score_button).setEnabled(score > 1);
 	}
 
 	public void setHoleAverage(Integer average) {
@@ -84,7 +85,7 @@ public class ScorecardPlayerView extends RelativeLayout {
 
 	private void setAdjustmentListener(PlayerScoreAdjustmentListener scoreAdjustmentListener) {
 		final PlayerScoreAdjustmentListener adjustmentListener = scoreAdjustmentListener != null ?
-				scoreAdjustmentListener : new EmptyPlayerScoreAdjustmentListener();
+				scoreAdjustmentListener : EMPTY_LISTENER;
 
 		findViewById(R.id.view_scorecard_player_decrease_score_button).setOnClickListener(new OnClickListener() {
 			@Override

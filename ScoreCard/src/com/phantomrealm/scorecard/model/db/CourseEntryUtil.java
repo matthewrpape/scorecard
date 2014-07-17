@@ -13,7 +13,7 @@ import com.phantomrealm.scorecard.model.Course;
 import com.phantomrealm.scorecard.model.db.DatabaseContract.CourseEntry;
 
 public class CourseEntryUtil {
-	
+
 	private static final String TAG = CourseEntryUtil.class.getSimpleName();
 	private static final String PAR_STRING_SEPARATOR = ",";
 	private static DatabaseHelper mHelper;

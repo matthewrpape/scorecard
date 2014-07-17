@@ -2,7 +2,6 @@ package com.phantomrealm.scorecard.view.listadapters;
 
 import java.util.List;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +17,9 @@ public class ScorecardPlayerAdapter extends ArrayAdapter<Player> {
 		public void adjustScore(int holeIndex, Player player, int adjustment);
 	}
 
-	private class EmptyScoreAdjustmentListener implements ScoreAdjustmentListener {
+	private static final ScoreAdjustmentListener EMPTY_LISTENER = new ScoreAdjustmentListener() {
 		@Override public void adjustScore(int holeIndex, Player player, int adjustment) { }
-	}
+	};
 
 	private int mHoleIndex;
 	private List<Player> mPlayers;
@@ -30,7 +29,7 @@ public class ScorecardPlayerAdapter extends ArrayAdapter<Player> {
 	private ScoreAdjustmentListener mListener;
 
     public ScorecardPlayerAdapter(Context context, int resource, int holeIndex, List<Player> players, List<Integer> scores,
-    		List<Integer> courseScoreDifferentials, List<Integer> averages, ScoreAdjustmentListener listener) {
+    		List<Integer> courseScoreDifferentials, List<Integer> averages) {
     	super(context, resource);
 
     	mHoleIndex = holeIndex;
@@ -38,7 +37,11 @@ public class ScorecardPlayerAdapter extends ArrayAdapter<Player> {
 		mScores = scores;
 		mCourseScoreDifferentials = courseScoreDifferentials;
 		mAverages = averages;
-		mListener = listener != null ? listener : new EmptyScoreAdjustmentListener();
+		mListener = EMPTY_LISTENER;
+    }
+
+    public void setAdjustmentListener(ScoreAdjustmentListener listener) {
+    	mListener = listener != null ? listener : EMPTY_LISTENER;
     }
 
     @Override
@@ -46,7 +49,7 @@ public class ScorecardPlayerAdapter extends ArrayAdapter<Player> {
     	return mPlayers == null ? 0 : mPlayers.size();
     }
 
-    @SuppressLint("InflateParams")
+    @Override
 	public View getView(int position, View convertView, ViewGroup parent) {
     	Player player = mPlayers.get(position);
     	Integer holeScore = mScores.get(position);
