@@ -16,7 +16,7 @@ import android.widget.TextView;
 import com.phantomrealm.scorecard.R;
 import com.phantomrealm.scorecard.model.Course;
 import com.phantomrealm.scorecard.model.db.CourseEntryUtil;
-import com.phantomrealm.scorecard.view.HoleAdapter;
+import com.phantomrealm.scorecard.view.listadapters.HoleAdapter;
 
 public class EditCourseFragment extends Fragment {
 

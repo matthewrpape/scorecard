@@ -52,4 +52,10 @@
 	<string name="hole_label">"Hole "</string>
 	<string name="par_label">Par</string>
 
+	<!-- scorecard -->
+	<string name="scorecard_hole_label">"Hole "</string>
+	<string name="scorecard_par_label">"Par "</string>
+	<string name="average">"Avg: "</string>
+	<string name="total">"Total: "</string>
+	<string name="no_average">N/A</string>
 </resources>

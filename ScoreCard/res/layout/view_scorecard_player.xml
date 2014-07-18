@@ -1,0 +1,64 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fragmentContainer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/margin_size_medium" >
+
+    <TextView
+        android:id="@+id/view_scorecard_player_name_label"
+        style="@style/text_secondary"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="@dimen/margin_size_small"
+        android:layout_marginLeft="@dimen/margin_size_medium"
+        android:layout_marginRight="@dimen/margin_size_medium"
+        android:layout_toLeftOf="@+id/view_scorecard_player_total_score_label"
+        android:gravity="left"
+        android:singleLine="true" />
+
+    <TextView
+        android:id="@id/view_scorecard_player_total_score_label"
+        style="@style/text_secondary"
+        android:layout_toLeftOf="@+id/view_scorecard_player_total_score"
+        android:text="@string/total" />
+
+    <TextView
+        android:id="@id/view_scorecard_player_total_score"
+        style="@style/text_secondary"
+        android:layout_marginRight="@dimen/margin_size_medium"
+        android:layout_toLeftOf="@+id/view_scorecard_player_average_score_label" />
+
+    <TextView
+        android:id="@id/view_scorecard_player_average_score_label"
+        style="@style/text_secondary"
+        android:layout_toLeftOf="@+id/view_scorecard_player_average_score"
+        android:text="@string/average" />
+
+    <TextView
+        android:id="@id/view_scorecard_player_average_score"
+        style="@style/text_secondary"
+        android:layout_marginRight="@dimen/margin_size_medium"
+        android:layout_alignParentRight="true" />
+
+    <TextView
+        android:id="@+id/view_scorecard_player_hole_score_label"
+        style="@style/text_view_secondary"
+        android:layout_below="@id/view_scorecard_player_name_label"
+        android:layout_marginLeft="@dimen/margin_size_medium" />
+
+    <TextView
+        android:id="@+id/view_scorecard_player_decrease_score_button"
+        style="@style/button_primary"
+        android:layout_below="@id/view_scorecard_player_name_label"
+        android:layout_marginRight="@dimen/margin_size_medium"
+        android:layout_toLeftOf="@+id/view_scorecard_player_increase_score_button"
+        android:text="@string/decrement" />
+
+    <TextView
+        android:id="@id/view_scorecard_player_increase_score_button"
+        style="@style/button_primary"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/view_scorecard_player_name_label"
+        android:layout_marginRight="@dimen/margin_size_medium"
+        android:text="@string/increment" />
+
+</RelativeLayout>

@@ -1,4 +1,4 @@
-package com.phantomrealm.scorecard.view;
+package com.phantomrealm.scorecard.view.listadapters;
 
 import java.util.List;
 

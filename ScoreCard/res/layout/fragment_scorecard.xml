@@ -1,0 +1,60 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fragmentContainer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal" >
+
+    <TextView
+        android:id="@+id/scorecard_course_label"
+        style="@style/text_subtitle" />
+
+    <TextView
+        android:id="@+id/scorecard_hole_label"
+        style="@style/text_secondary"
+        android:layout_below="@id/scorecard_course_label"
+        android:layout_toLeftOf="@+id/scorecard_hole"
+        android:text="@string/scorecard_hole_label" />
+
+    <TextView
+        android:id="@id/scorecard_hole"
+        style="@style/text_secondary"
+        android:layout_below="@id/scorecard_course_label"
+        android:layout_marginRight="@dimen/margin_size_medium"
+        android:layout_toLeftOf="@+id/scorecard_par_label" />
+
+    <TextView
+        android:id="@id/scorecard_par_label"
+        style="@style/text_secondary"
+        android:layout_below="@id/scorecard_course_label"
+        android:layout_toLeftOf="@+id/scorecard_par"
+        android:text="@string/scorecard_par_label" />
+
+    <TextView
+        android:id="@id/scorecard_par"
+        style="@style/text_secondary"
+        android:layout_below="@id/scorecard_course_label"
+        android:layout_marginRight="@dimen/margin_size_medium"
+        android:layout_toLeftOf="@+id/scorecard_previous_hole_button" />
+
+    <TextView
+        android:id="@id/scorecard_previous_hole_button"
+        style="@style/button_primary"
+        android:layout_below="@id/scorecard_course_label"
+        android:layout_marginRight="@dimen/margin_size_medium"
+        android:layout_toLeftOf="@+id/scorecard_next_hole_button"
+        android:text="@string/decrement" />
+
+    <TextView
+        android:id="@id/scorecard_next_hole_button"
+        style="@style/button_primary"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/scorecard_course_label"
+        android:text="@string/increment" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/scorecard_player_pager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/scorecard_next_hole_button" />
+
+</RelativeLayout>
