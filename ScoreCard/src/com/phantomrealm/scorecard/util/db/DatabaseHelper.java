@@ -12,7 +12,7 @@ import com.phantomrealm.scorecard.util.db.DatabaseContract.ScorecardEntry;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
 	// If you change the database schema, you must increment the database version.
-	public static final int DATABASE_VERSION = 2;
+	public static final int DATABASE_VERSION = 3;
 	public static final String DATABASE_NAME = "scorecard.db";
 	private static final String INT_TYPE = " INTEGER";
 	private static final String KEY_TYPE = INT_TYPE + " PRIMARY KEY";
@@ -29,19 +29,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			+ CourseEntry.COLUMN_PARS + TEXT_TYPE + ")";
 	private static final String SQL_DELETE_COURSE_TABLE = "DROP TABLE IF EXISTS "
 			+ CourseEntry.TABLE_NAME;
+	private static final String SQL_CREATE_SCORECARD_TABLE = "CREATE TABLE "
+			+ ScorecardEntry.TABLE_NAME + " (" + ScorecardEntry._ID + KEY_TYPE + COMMA_SEP
+			+ ScorecardEntry.COLUMN_DATE + TEXT_TYPE + ")";
+	private static final String SQL_DELETE_SCORECARD_TABLE = "DROP TABLE IF EXISTS "
+			+ ScorecardEntry.TABLE_NAME;
 	private static final String SQL_CREATE_PERFORMANCE_TABLE = "CREATE TABLE "
 			+ PerformanceEntry.TABLE_NAME + " (" + PerformanceEntry._ID + KEY_TYPE + COMMA_SEP
+			+ PerformanceEntry.COLUMN_SCORECARD_ID + INT_TYPE + COMMA_SEP
 			+ PerformanceEntry.COLUMN_PLAYER_ID + INT_TYPE + COMMA_SEP
 			+ PerformanceEntry.COLUMN_COURSE_ID + INT_TYPE + COMMA_SEP
 			+ PerformanceEntry.COLUMN_SCORES + TEXT_TYPE + ")";
 	private static final String SQL_DELETE_PERFORMANCE_TABLE = "DROP TABLE IF EXISTS "
 			+ PerformanceEntry.TABLE_NAME;
-	private static final String SQL_CREATE_SCORECARD_TABLE = "CREATE TABLE "
-			+ ScorecardEntry.TABLE_NAME + " (" + ScorecardEntry._ID + KEY_TYPE + COMMA_SEP
-			+ ScorecardEntry.COLUMN_DATE + TEXT_TYPE + COMMA_SEP
-			+ ScorecardEntry.COLUMN_PERFORMANCES + TEXT_TYPE + ")";
-	private static final String SQL_DELETE_SCORECARD_TABLE = "DROP TABLE IF EXISTS "
-			+ ScorecardEntry.TABLE_NAME;
 
 	public DatabaseHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -51,8 +51,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 		db.execSQL(SQL_CREATE_PLAYER_TABLE);
 		db.execSQL(SQL_CREATE_COURSE_TABLE);
-		db.execSQL(SQL_CREATE_PERFORMANCE_TABLE);
 		db.execSQL(SQL_CREATE_SCORECARD_TABLE);
+		db.execSQL(SQL_CREATE_PERFORMANCE_TABLE);
 	}
 
 	@Override
@@ -60,8 +60,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		// TODO - handle updates / downgrades without losing all the data
 		db.execSQL(SQL_DELETE_PLAYER_TABLE);
 		db.execSQL(SQL_DELETE_COURSE_TABLE);
-		db.execSQL(SQL_DELETE_PERFORMANCE_TABLE);
 		db.execSQL(SQL_DELETE_SCORECARD_TABLE);
+		db.execSQL(SQL_DELETE_PERFORMANCE_TABLE);
 
 		onCreate(db);
 	}
