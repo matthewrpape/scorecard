@@ -102,9 +102,9 @@ public class CourseEntryUtil {
 	 * @return
 	 */
 	public List<Course> getCoursesFromDatabase() {
-		// get database and query for all players
+		// get database and query for all courses
 		SQLiteDatabase db = mHelper.getReadableDatabase();
-		Cursor cursor = getCourseResultsFromDatabase(db);
+		Cursor cursor = getCourseResultsFromDatabase(db, null);
 		
 		// convert database results into a list of Course objects
 		List<Course> courses = getCoursesFromResults(cursor);
@@ -117,16 +117,38 @@ public class CourseEntryUtil {
 	}
 
 	/**
-	 * Query the database to get the list of existing courses, including ids, names, and pars
-	 * @param db
+	 * Retrieve a {@link Course} from the database with the given id
+	 * @param id
 	 * @return
 	 */
-	private Cursor getCourseResultsFromDatabase(SQLiteDatabase db) {
+	public Course getCourseFromDatabase(long id) {
+		// get database and query for all courses
+		SQLiteDatabase db = mHelper.getReadableDatabase();
+		String whereClause = CourseEntry._ID + " = " + id;
+		Cursor cursor = getCourseResultsFromDatabase(db, whereClause);
+
+		// convert database results into a list of Course objects
+		Course course = getCoursesFromResults(cursor).get(0);
+		
+		// cleanup
+		cursor.close();
+		db.close();
+		
+		return course;
+	}
+
+	/**
+	 * Query the database to get the list of existing courses, including ids, names, and pars
+	 * @param db
+	 * @param whereClause
+	 * @return
+	 */
+	private Cursor getCourseResultsFromDatabase(SQLiteDatabase db, String whereClause) {
 		// define which columns we are interested in
 		String[] projection = {CourseEntry._ID, CourseEntry.COLUMN_NAME, CourseEntry.COLUMN_PARS};
 
 		// query the db
-		return db.query( CourseEntry.TABLE_NAME, projection, null, null, null, null, null);
+		return db.query(CourseEntry.TABLE_NAME, projection, whereClause, null, null, null, null);
 	}
 
 	/**

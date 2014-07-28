@@ -1,5 +1,6 @@
 package com.phantomrealm.scorecard.model.db;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,9 +11,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.phantomrealm.scorecard.model.Course;
 import com.phantomrealm.scorecard.model.Player;
 import com.phantomrealm.scorecard.model.Scorecard;
-import com.phantomrealm.scorecard.util.db.DatabaseContract.CourseEntry;
 import com.phantomrealm.scorecard.util.db.DatabaseContract.PerformanceEntry;
 import com.phantomrealm.scorecard.util.db.DatabaseContract.ScorecardEntry;
 import com.phantomrealm.scorecard.util.db.DatabaseHelper;
@@ -105,23 +106,22 @@ public class ScorecardEntryUtil {
 	}
 
 	/**
-	 * Generates a map of players to a list of scores for a specific scorecard
-	 * @param scorecardId denoting the scorecard whose performances are to be looked up
+	 * Generates a list of {@link Scorecard} objects based on the contents of the database
 	 * @return
 	 */
-	public Map<Player, List<Integer>> getPerformancesFromDatabase(int scorecardId) {
-		// get database and query for entries associated with the specific scorecardId
+	public List<Scorecard> getScorecardsFromDatabase() {
+		// get database and query for all scorecards
 		SQLiteDatabase db = mHelper.getReadableDatabase();
-		Cursor cursor = getPerformanceResultsFromDatabase(db, scorecardId);
+		Cursor cursor = getScorecardResultsFromDatabase(db);
 
-		// convert database results into a map of players to score lists
-		Map<Player, List<Integer>> performances = getPerformanceResults(cursor);
+		// convert database results into a list of Scorecard objects
+		List<Scorecard> scorecards = getScorecardsFromResults(cursor);
 
 		// cleanup
 		cursor.close();
 		db.close();
 
-		return performances;
+		return scorecards;
 	}
 
 	/**
@@ -145,19 +145,71 @@ public class ScorecardEntryUtil {
 	}
 
 	/**
+	 * Generates a map of players to a list of scores for a specific scorecard
+	 * @param scorecardId denoting the scorecard whose performances are to be looked up
+	 * @return
+	 */
+	private Map<Player, List<Integer>> getPerformancesFromDatabase(long scorecardId) {
+		// get database and query for entries associated with the specific scorecardId
+		SQLiteDatabase db = mHelper.getReadableDatabase();
+		Cursor cursor = getPerformanceResultsFromDatabase(db, scorecardId);
+
+		// convert database results into a map of players to score lists
+		Map<Player, List<Integer>> performances = getPerformancesFromResults(cursor);
+
+		// cleanup
+		cursor.close();
+		db.close();
+
+		return performances;
+	}
+
+	/**
+	 * Query the database to get the list of all scorecards
+	 * @param db
+	 * @return
+	 */
+	private Cursor getScorecardResultsFromDatabase(SQLiteDatabase db) {
+		// define which columns we are interested in
+		String[] projection = {ScorecardEntry._ID, ScorecardEntry.COLUMN_COURSE_ID, ScorecardEntry.COLUMN_DATE};
+
+		// query the db
+		return db.query(ScorecardEntry.TABLE_NAME, projection, null, null, null, null, null);
+	}
+
+	/**
 	 * Query the database to get the list of performances that correspond to a specific scorecard.
 	 * @param db
 	 * @param scorecardId
 	 * @return
 	 */
-	private Cursor getPerformanceResultsFromDatabase(SQLiteDatabase db, int scorecardId) {
+	private Cursor getPerformanceResultsFromDatabase(SQLiteDatabase db, long scorecardId) {
 		// define which columns we are interested in
 		String[] projection = {PerformanceEntry._ID, PerformanceEntry.COLUMN_PLAYER_ID, PerformanceEntry.COLUMN_SCORES};
 		String whereClause = String.format("%s = ?", PerformanceEntry.COLUMN_SCORECARD_ID);
-		String[] whereValues = new String[] { Integer.toString(scorecardId) };
+		String[] whereValues = new String[] { Long.toString(scorecardId) };
 
 		// query the db
-		return db.query( CourseEntry.TABLE_NAME, projection, whereClause, whereValues, null, null, null);
+		return db.query(PerformanceEntry.TABLE_NAME, projection, whereClause, whereValues, null, null, null);
+	}
+
+	/**
+	 * Creates a list of scorecards by iterating through the cursor starting at the first position
+	 *  (regardless of the position of the cursor passed into the function). As a side effect the
+	 *  position of this cursor will be modified (generally until it is past the final position).
+	 * @param cursor
+	 * @return
+	 */
+	private List<Scorecard> getScorecardsFromResults(Cursor cursor) {
+		List<Scorecard> scorecards = new ArrayList<Scorecard>();
+
+		cursor.moveToFirst();
+		while (!cursor.isAfterLast()) {
+			scorecards.add(getScorecardFromCursor(cursor));
+			cursor.moveToNext();
+		}
+
+		return scorecards;
 	}
 
 	/**
@@ -167,7 +219,7 @@ public class ScorecardEntryUtil {
 	 * @param cursor
 	 * @return
 	 */
-	private Map<Player, List<Integer>> getPerformanceResults(Cursor cursor) {
+	private Map<Player, List<Integer>> getPerformancesFromResults(Cursor cursor) {
 		HashMap<Player, List<Integer>> performances = new HashMap<Player, List<Integer>>();
 
 		cursor.moveToFirst();
@@ -179,6 +231,26 @@ public class ScorecardEntryUtil {
 		}
 
 		return performances;
+	}
+
+	/**
+	 * Retrieves a {@link Scorecard} from cursor at its current position
+	 * @param cursor
+	 * @return
+	 */
+	private Scorecard getScorecardFromCursor(Cursor cursor) {
+		long scorecardId = cursor.getLong(cursor.getColumnIndexOrThrow(ScorecardEntry._ID));
+//		long scorecardDate = cursor.getLong(cursor.getColumnIndexOrThrow(ScorecardEntry.COLUMN_DATE));
+		long courseId = cursor.getLong(cursor.getColumnIndexOrThrow(ScorecardEntry.COLUMN_COURSE_ID));
+		Course course = CourseEntryUtil.getUtil().getCourseFromDatabase(courseId);
+
+		Map<Player, List<Integer>> playerScores = getPerformancesFromDatabase(scorecardId);
+		List<Player> players = new ArrayList<Player>();
+		for (Player player : playerScores.keySet()) {
+			players.add(player);
+		}
+
+		return new Scorecard(scorecardId, course, players);
 	}
 
 	/**

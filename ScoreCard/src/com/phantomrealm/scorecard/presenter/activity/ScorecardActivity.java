@@ -6,6 +6,7 @@ import java.util.List;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
+import android.view.KeyEvent;
 
 import com.phantomrealm.scorecard.R;
 import com.phantomrealm.scorecard.model.Course;
@@ -20,11 +21,13 @@ import com.phantomrealm.scorecard.presenter.fragment.ScorecardFragment;
  */
 public class ScorecardActivity extends AbstractSingleFragmentActivity {
 
-	public static final String INTENT_EXTRA_COURSE_ID_TAG = "intent_extra_course_id_tag";
-	public static final String INTENT_EXTRA_COURSE_NAME_TAG = "intent_extra_course_name_tag";
-	public static final String INTENT_EXTRA_COURSE_PARS_TAG = "intent_extra_course_pars_tag";
-	public static final String INTENT_EXTRA_PLAYER_IDS_TAG = "intent_extra_player_ids_tag";
-	public static final String INTENT_EXTRA_PLAYER_NAMES_TAG = "intent_extra_player_names_tag";
+	private static final String INTENT_EXTRA_COURSE_ID_TAG = "intent_extra_course_id_tag";
+	private static final String INTENT_EXTRA_COURSE_NAME_TAG = "intent_extra_course_name_tag";
+	private static final String INTENT_EXTRA_COURSE_PARS_TAG = "intent_extra_course_pars_tag";
+	private static final String INTENT_EXTRA_PLAYER_IDS_TAG = "intent_extra_player_ids_tag";
+	private static final String INTENT_EXTRA_PLAYER_NAMES_TAG = "intent_extra_player_names_tag";
+
+	private ScorecardFragment mFragment;
 
 	@Override
 	protected Fragment createFragment() {
@@ -39,7 +42,8 @@ public class ScorecardActivity extends AbstractSingleFragmentActivity {
 		List<Player> players = createPlayers(playerIds, playerNames);
 
 		Scorecard scorecard = new Scorecard(course, players);
-		return new ScorecardFragment(scorecard);
+		mFragment = new ScorecardFragment(scorecard);
+		return mFragment;
 	}
 
 	@Override
@@ -50,6 +54,15 @@ public class ScorecardActivity extends AbstractSingleFragmentActivity {
 	@Override
 	protected int getFragmentContainerId() {
 		return R.id.fragmentContainer;
+	}
+
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			mFragment.saveScorecard();
+		}
+
+		return super.onKeyDown(keyCode, event);
 	}
 
 	public static Intent makeIntent(Context context, long courseId, String courseName, List<Integer> coursePars, List<Integer> playerIds, List<String> playerNames) {

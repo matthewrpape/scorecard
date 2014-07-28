@@ -20,7 +20,7 @@ public class Scorecard {
 		mId = id;
 		mCourse = course;
 		mPlayers = players;
-		mScores = createInitialScores();
+		mScores = createDefaultScores(players, mCourse);
 	}
 
 	public long getId() {
@@ -39,6 +39,12 @@ public class Scorecard {
 		return mScores;
 	}
 
+	public void setScoresForPlayer(Player player, List<Integer> scores) {
+		if (mPlayers.contains(player)) {
+			mScores.put(player, scores);
+		}
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -46,7 +52,7 @@ public class Scorecard {
 		       .append(mId)
 		       .append("\n ")
 		       .append(mCourse);
-		for (Player player : mPlayers) {
+		for (Player player : mScores.keySet()) {
 			builder.append("\n ")
 				   .append(player)
 				   .append("\n ")
@@ -64,11 +70,14 @@ public class Scorecard {
 
 	/**
 	 * Creates a map that links each player to a list of scores, which are all initialized to par
+	 * @param players
+	 * @param course
+	 * @return
 	 */
-	private Map<Player, List<Integer>> createInitialScores() {
-		HashMap<Player, List<Integer>> scores = new HashMap<Player, List<Integer>>(mPlayers.size());
-		for (Player player : mPlayers) {
-			scores.put(player, createInitialPlayerScores());
+	private Map<Player, List<Integer>> createDefaultScores(List<Player> players, Course course) {
+		HashMap<Player, List<Integer>> scores = new HashMap<Player, List<Integer>>(players.size());
+		for (Player player : players) {
+			scores.put(player, createDefaultPlayerScores(course));
 		}
 
 		return scores;
@@ -76,11 +85,13 @@ public class Scorecard {
 
 	/**
 	 * Creates a list of scores, which are all initialized to par
+	 * @param course
+	 * @return
 	 */
-	private List<Integer> createInitialPlayerScores() {
-		ArrayList<Integer> scores = new ArrayList<Integer>(mCourse.getHoleCount());
-		for (int i = 0; i < mCourse.getHoleCount(); ++i) {
-			scores.add(mCourse.getParList().get(i));
+	private List<Integer> createDefaultPlayerScores(Course course) {
+		ArrayList<Integer> scores = new ArrayList<Integer>(course.getHoleCount());
+		for (int i = 0; i < course.getHoleCount(); ++i) {
+			scores.add(course.getParList().get(i));
 		}
 
 		return scores;

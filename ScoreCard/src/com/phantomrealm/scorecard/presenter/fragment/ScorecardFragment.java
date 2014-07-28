@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import com.phantomrealm.scorecard.R;
 import com.phantomrealm.scorecard.model.Course;
 import com.phantomrealm.scorecard.model.Player;
 import com.phantomrealm.scorecard.model.Scorecard;
+import com.phantomrealm.scorecard.model.db.ScorecardEntryUtil;
 import com.phantomrealm.scorecard.view.pageradapters.ScorecardPlayerPagerAdapter;
 
 public class ScorecardFragment extends Fragment {
@@ -58,9 +60,13 @@ public class ScorecardFragment extends Fragment {
 		return view;
 	}
 
+	public void saveScorecard() {
+		ScorecardEntryUtil.getUtil().insertScorecard(mScorecard);
+	}
+
 	private void setupScorecardPager() {
-		Map<Player, List<Integer>> playerScores = getPlayerScores(mScorecard.getPlayers(), mScorecard.getCourse());
-		Map<Player, List<Integer>> playerAverages = getPlayerAverages(mScorecard.getPlayers(), mScorecard.getCourse());
+		Map<Player, List<Integer>> playerScores = mScorecard.getPlayerScores();
+		Map<Player, List<Integer>> playerAverages = getPlayerAverages(playerScores.keySet(), mScorecard.getCourse());
 		mAdapter = new ScorecardPlayerPagerAdapter(mScorecard.getPlayers(), mScorecard.getCourse().getParList(), playerScores, playerAverages);
 		mViewPager.setAdapter(mAdapter);
 
@@ -103,29 +109,7 @@ public class ScorecardFragment extends Fragment {
 		});
 	}
 
-	// TODO - load from db
-	private Map<Player, List<Integer>> getPlayerScores(List<Player> players, Course course) {
-		Map<Player, List<Integer>> playerTotals = new HashMap<Player, List<Integer>>();
-		for (Player player: players) {
-			List<Integer> scores = getPlayerScoresForCourse(player, course);
-			playerTotals.put(player, scores);
-		}
-
-		return playerTotals;
-	}
-
-	// TODO - load from db
-	private List<Integer> getPlayerScoresForCourse(Player player, Course course) {
-		List<Integer> scores = new ArrayList<Integer>();
-		for (Integer par : course.getParList()) {
-			scores.add(par);
-		}
-
-		return scores;
-	}
-
-	// TODO - load from db
-	private Map<Player, List<Integer>> getPlayerAverages(List<Player> players, Course course) {
+	private Map<Player, List<Integer>> getPlayerAverages(Set<Player> players, Course course) {
 		Map<Player, List<Integer>> playerAverages = new HashMap<Player, List<Integer>>();
 		for (Player player : players) {
 			List<Integer> averages = getPlayerAveragesForCourse(player, course);
