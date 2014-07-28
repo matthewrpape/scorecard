@@ -1,5 +1,6 @@
 package com.phantomrealm.scorecard.model.db;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -86,9 +87,6 @@ public class PerformanceEntryUtil {
 	 * @param id of the row to remove from the database
 	 */
 	public void deletePerformance(long id) {
-		// TODO - check which scorecards this performance belongs to
-		// TODO - delete those scorecards if they don't have other performances still
-
 		// get the db in write mode
 		SQLiteDatabase db = mHelper.getWritableDatabase();
 
@@ -103,11 +101,30 @@ public class PerformanceEntryUtil {
 	}
 
 	/**
+	 * Queries the database for all performances associated with the given scorecard id
+	 *  and deletes them
+	 * @param scorecardId
+	 */
+	public void deletePerformancesForScorecard(long scorecardId) {
+		// get database and query for entries associated with the specific scorecardId
+		SQLiteDatabase db = mHelper.getWritableDatabase();
+		Cursor cursor = getPerformanceIdsFromDatabase(db, scorecardId);
+
+		// convert database results into a list of performance ids
+		List<Long> performanceIds = getPerformanceIds(cursor);
+
+		// delete rows corresponding to performance ids
+		for (Long id : performanceIds) {
+			deletePerformance(id);
+		}
+	}
+
+	/**
 	 * Generates a map of players to a list of scores for a specific scorecard
 	 * @param scorecardId denoting the scorecard whose performances are to be looked up
 	 * @return
 	 */
-	public Map<Player, List<Integer>> getPerformancesFromDatabase(int scorecardId) {
+	public Map<Player, List<Integer>> getPerformancesFromDatabase(long scorecardId) {
 		// get database and query for entries associated with the specific scorecardId
 		SQLiteDatabase db = mHelper.getReadableDatabase();
 		Cursor cursor = getPerformanceResultsFromDatabase(db, scorecardId);
@@ -128,14 +145,30 @@ public class PerformanceEntryUtil {
 	 * @param scorecardId
 	 * @return
 	 */
-	private Cursor getPerformanceResultsFromDatabase(SQLiteDatabase db, int scorecardId) {
+	private Cursor getPerformanceResultsFromDatabase(SQLiteDatabase db, long scorecardId) {
 		// define which columns we are interested in
 		String[] projection = {PerformanceEntry._ID, PerformanceEntry.COLUMN_PLAYER_ID, PerformanceEntry.COLUMN_SCORES};
 		String whereClause = String.format("%s = ?", PerformanceEntry.COLUMN_SCORECARD_ID);
-		String[] whereValues = new String[] { Integer.toString(scorecardId) };
+		String[] whereValues = new String[] { Long.toString(scorecardId) };
 
 		// query the db
-		return db.query( CourseEntry.TABLE_NAME, projection, whereClause, whereValues, null, null, null);
+		return db.query(CourseEntry.TABLE_NAME, projection, whereClause, whereValues, null, null, null);
+	}
+
+	/**
+	 * Query the database to get the list of performance ids that correspond to a specific scorecard.
+	 * @param db
+	 * @param scorecardId
+	 * @return
+	 */
+	private Cursor getPerformanceIdsFromDatabase(SQLiteDatabase db, long scorecardId) {
+		// define which columns we are interested in
+		String[] projection = {PerformanceEntry._ID};
+		String whereClause = String.format("%s = ?", PerformanceEntry.COLUMN_SCORECARD_ID);
+		String[] whereValues = new String[] { Long.toString(scorecardId) };
+
+		// query the db
+		return db.query(CourseEntry.TABLE_NAME, projection, whereClause, whereValues, null, null, null);
 	}
 
 	/**
@@ -157,6 +190,22 @@ public class PerformanceEntryUtil {
 		}
 
 		return performances;
+	}
+
+	/**
+	 * Creates a list of performance ids by iterating through the cursor starting at the first
+	 *  position (regardles of the position of the cursor pass into the function). As a side effect
+	 *  the position of this cursor will be modified (generally until it is past the final position).
+	 */
+	private List<Long> getPerformanceIds(Cursor cursor) {
+		List<Long> performanceIds = new ArrayList<Long>();
+
+		cursor.moveToFirst();
+		while (!cursor.isAfterLast()) {
+			performanceIds.add(getIdFromCursor(cursor));
+		}
+
+		return performanceIds;
 	}
 
 	/**
@@ -191,4 +240,14 @@ public class PerformanceEntryUtil {
 		return scores;
 	}
 
+	/**
+	 * Gets the performance id from the given cursor at its current position
+	 * @param cursor
+	 * @return
+	 */
+	private long getIdFromCursor(Cursor cursor) {
+		long id = cursor.getLong(cursor.getColumnIndexOrThrow(PerformanceEntry._ID));
+
+		return id;
+	}
 }

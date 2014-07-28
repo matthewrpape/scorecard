@@ -31,7 +31,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			+ CourseEntry.TABLE_NAME;
 	private static final String SQL_CREATE_SCORECARD_TABLE = "CREATE TABLE "
 			+ ScorecardEntry.TABLE_NAME + " (" + ScorecardEntry._ID + KEY_TYPE + COMMA_SEP
-			+ ScorecardEntry.COLUMN_DATE + TEXT_TYPE + COMMA_SEP
+			+ ScorecardEntry.COLUMN_DATE + INT_TYPE + COMMA_SEP
 			+ ScorecardEntry.COLUMN_COURSE_ID + INT_TYPE + ")";
 	private static final String SQL_DELETE_SCORECARD_TABLE = "DROP TABLE IF EXISTS "
 			+ ScorecardEntry.TABLE_NAME;

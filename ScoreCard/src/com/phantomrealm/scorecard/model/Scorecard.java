@@ -35,6 +35,10 @@ public class Scorecard {
 		return mPlayers;
 	}
 
+	public Map<Player, List<Integer>> getPlayerScores() {
+		return mScores;
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
