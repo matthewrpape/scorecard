@@ -5,7 +5,9 @@ import android.os.Bundle;
 
 import com.phantomrealm.scorecard.R;
 import com.phantomrealm.scorecard.model.db.CourseEntryUtil;
+import com.phantomrealm.scorecard.model.db.PerformanceEntryUtil;
 import com.phantomrealm.scorecard.model.db.PlayerEntryUtil;
+import com.phantomrealm.scorecard.model.db.ScorecardEntryUtil;
 import com.phantomrealm.scorecard.presenter.fragment.MainFragment;
 
 /**
@@ -20,6 +22,8 @@ public class MainActivity extends AbstractSingleFragmentActivity {
 		super.onCreate(savedInstanceState);
 		PlayerEntryUtil.initializeInstance(this);
 		CourseEntryUtil.initializeInstance(this);
+		PerformanceEntryUtil.initializeInstance(this);
+		ScorecardEntryUtil.initializeInstance(this);
 	}
 
 	@Override

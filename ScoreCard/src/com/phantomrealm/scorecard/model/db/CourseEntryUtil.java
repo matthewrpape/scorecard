@@ -10,12 +10,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.phantomrealm.scorecard.model.Course;
-import com.phantomrealm.scorecard.model.db.DatabaseContract.CourseEntry;
+import com.phantomrealm.scorecard.util.db.DatabaseHelper;
+import com.phantomrealm.scorecard.util.db.DatabaseContract.CourseEntry;
+import com.phantomrealm.scorecard.util.db.DatabaseUtils;
 
 public class CourseEntryUtil {
 
 	private static final String TAG = CourseEntryUtil.class.getSimpleName();
-	private static final String PAR_STRING_SEPARATOR = ",";
 	private static DatabaseHelper mHelper;
 	private static CourseEntryUtil mInstance;
 	
@@ -43,12 +44,12 @@ public class CourseEntryUtil {
 		// create a new map of values, where column names are the keys
 		ContentValues values = new ContentValues();
 		values.put(CourseEntry.COLUMN_NAME, courseName);
-		values.put(CourseEntry.COLUMN_PARS, createParString(pars));
+		values.put(CourseEntry.COLUMN_PARS, DatabaseUtils.buildStringFromList(pars));
 
 		// insert the new row
 		long newRowId = db.insert(CourseEntry.TABLE_NAME, null, values);
 		Log.d(TAG, "added entry with id: " + newRowId + ", name: " + courseName);
-		
+
 		db.close();
 	}
 
@@ -66,7 +67,7 @@ public class CourseEntryUtil {
 		// create a new map of values, where column names are the keys
 		ContentValues values = new ContentValues();
 		values.put(CourseEntry.COLUMN_NAME, courseName);
-		values.put(CourseEntry.COLUMN_PARS, createParString(pars));
+		values.put(CourseEntry.COLUMN_PARS, DatabaseUtils.buildStringFromList(pars));
 
 		// describe which row we want to update
 		String whereClause = CourseEntry._ID + " = " + id;
@@ -74,10 +75,10 @@ public class CourseEntryUtil {
 		// update the existing row
 		int rows = db.update(CourseEntry.TABLE_NAME, values, whereClause, null);
 		Log.d(TAG, "updated " + rows + " rows.");
-		
+
 		db.close();
 	}
-	
+
 	/**
 	 * Delete an existing entry from the database
 	 * @param id of the row to remove from the database
@@ -101,9 +102,9 @@ public class CourseEntryUtil {
 	 * @return
 	 */
 	public List<Course> getCoursesFromDatabase() {
-		// get database and query for all players
+		// get database and query for all courses
 		SQLiteDatabase db = mHelper.getReadableDatabase();
-		Cursor cursor = getCourseResultsFromDatabase(db);
+		Cursor cursor = getCourseResultsFromDatabase(db, null);
 		
 		// convert database results into a list of Course objects
 		List<Course> courses = getCoursesFromResults(cursor);
@@ -116,16 +117,38 @@ public class CourseEntryUtil {
 	}
 
 	/**
-	 * Query the database to get the list of existing courses, including ids, names, and pars
-	 * @param db
+	 * Retrieve a {@link Course} from the database with the given id
+	 * @param id
 	 * @return
 	 */
-	private Cursor getCourseResultsFromDatabase(SQLiteDatabase db) {
+	public Course getCourseFromDatabase(long id) {
+		// get database and query for all courses
+		SQLiteDatabase db = mHelper.getReadableDatabase();
+		String whereClause = CourseEntry._ID + " = " + id;
+		Cursor cursor = getCourseResultsFromDatabase(db, whereClause);
+
+		// convert database results into a list of Course objects
+		Course course = getCoursesFromResults(cursor).get(0);
+		
+		// cleanup
+		cursor.close();
+		db.close();
+		
+		return course;
+	}
+
+	/**
+	 * Query the database to get the list of existing courses, including ids, names, and pars
+	 * @param db
+	 * @param whereClause
+	 * @return
+	 */
+	private Cursor getCourseResultsFromDatabase(SQLiteDatabase db, String whereClause) {
 		// define which columns we are interested in
 		String[] projection = {CourseEntry._ID, CourseEntry.COLUMN_NAME, CourseEntry.COLUMN_PARS};
 
 		// query the db
-		return db.query( CourseEntry.TABLE_NAME, projection, null, null, null, null, null);
+		return db.query(CourseEntry.TABLE_NAME, projection, whereClause, null, null, null, null);
 	}
 
 	/**
@@ -157,38 +180,8 @@ public class CourseEntryUtil {
 		long id = cursor.getLong(cursor.getColumnIndexOrThrow(CourseEntry._ID));
 		String name = cursor.getString(cursor.getColumnIndexOrThrow(CourseEntry.COLUMN_NAME));
 		String parString = cursor.getString(cursor.getColumnIndexOrThrow(CourseEntry.COLUMN_PARS));
-		List<Integer> pars = createParList(parString);
+		List<Integer> pars = DatabaseUtils.buildListFromString(parString);
 		return new Course(id, name, pars);
-	}
-
-	/**
-	 * Create a single string from a list of par values
-	 * @param parList
-	 * @return
-	 */
-	private String createParString(List<Integer> parList) {
-		StringBuilder builder = new StringBuilder();
-		for (Integer par : parList) {
-			builder.append(par.toString());
-			builder.append(PAR_STRING_SEPARATOR);
-		}
-		String parString = builder.toString();
-		return parString.substring(0, parString.length() - 1);
-	}
-
-	/**
-	 * Create a list of pars from a single string
-	 * @param parString
-	 * @return
-	 */
-	private List<Integer> createParList(String parString) {
-		String[] parStrings = parString.split(PAR_STRING_SEPARATOR);
-		ArrayList<Integer> pars = new ArrayList<Integer>();
-		for (String par : parStrings) {
-			pars.add(Integer.parseInt(par));
-		}
-		
-		return pars;
 	}
 
 }

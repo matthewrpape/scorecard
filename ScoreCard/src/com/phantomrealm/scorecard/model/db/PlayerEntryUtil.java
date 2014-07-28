@@ -10,7 +10,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.phantomrealm.scorecard.model.Player;
-import com.phantomrealm.scorecard.model.db.DatabaseContract.PlayerEntry;
+import com.phantomrealm.scorecard.util.db.DatabaseHelper;
+import com.phantomrealm.scorecard.util.db.DatabaseContract.PlayerEntry;
 
 public class PlayerEntryUtil {
 	
