@@ -21,13 +21,13 @@ public class DatabaseContract {
 	public static abstract class ScorecardEntry implements BaseColumns {
 		public static final String TABLE_NAME = "scorecards";
 		public static final String COLUMN_DATE = "scorecard_date";
+		public static final String COLUMN_COURSE_ID = "scorecard_course_id";
 	}
 
 	public static abstract class PerformanceEntry implements BaseColumns {
 		public static final String TABLE_NAME = "performances";
 		public static final String COLUMN_SCORECARD_ID = "performance_scorecard_id";
 		public static final String COLUMN_PLAYER_ID = "performance_player_id";
-		public static final String COLUMN_COURSE_ID = "performance_course_id";
 		public static final String COLUMN_SCORES = "performance_scores";
 	}
 
