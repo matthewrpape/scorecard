@@ -50,7 +50,9 @@ public class EditScorecardActivity extends AbstractSingleFragmentActivity {
 		List<Player> players = createPlayers(playerIds, playerNames);
 
 		Scorecard scorecard = new Scorecard(scorecardId, scorecardDate, course, players);
-		for (int i = 0; i < players.size(); ++i) {
+		System.out.println(scorecardScores);
+		System.out.println(scorecardScores != null);
+		for (int i = 0; i < scorecardScores.size(); ++i) {
 			scorecard.setScoresForPlayer(players.get(i), scorecardScores.get(i));
 		}
 
@@ -109,10 +111,10 @@ public class EditScorecardActivity extends AbstractSingleFragmentActivity {
 		try {
 			scorecardScores = (List<List<Integer>>) scores;
 		} catch (Exception exception) {
-			scorecardScores = new ArrayList<List<Integer>>();
+			// we handle invalid scores with an empty list
 		}
 
-		return scorecardScores;
+		return scorecardScores != null ? scorecardScores : new ArrayList<List<Integer>>();
 	}
 
 	private List<Player> createPlayers(List<Integer> playerIds, List<String> playerNames) {
