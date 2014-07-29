@@ -8,16 +8,18 @@ import java.util.Map;
 public class Scorecard {
 
 	private final long mId;
+	private final long mDate;
 	private final Course mCourse;
 	private final List<Player> mPlayers;
 	private final Map<Player, List<Integer>> mScores;
 
 	public Scorecard(Course course, List<Player> players) {
-		this(-1, course, players);
+		this(0, 0, course, players);
 	}
 
-	public Scorecard(long id, Course course, List<Player> players) {
+	public Scorecard(long id, long date, Course course, List<Player> players) {
 		mId = id;
+		mDate = date;
 		mCourse = course;
 		mPlayers = players;
 		mScores = createDefaultScores(players, mCourse);
@@ -25,6 +27,10 @@ public class Scorecard {
 
 	public long getId() {
 		return mId;
+	}
+
+	public long getDate() {
+		return mDate;
 	}
 
 	public Course getCourse() {

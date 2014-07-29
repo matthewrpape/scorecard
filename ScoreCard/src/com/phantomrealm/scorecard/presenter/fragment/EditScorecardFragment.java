@@ -61,7 +61,11 @@ public class EditScorecardFragment extends Fragment {
 	}
 
 	public void saveScorecard() {
-		ScorecardEntryUtil.getUtil().insertScorecard(mScorecard);
+		if (mScorecard.getId() > 0 && mScorecard.getDate() > 0) {
+			ScorecardEntryUtil.getUtil().updateScorecard(mScorecard);
+		} else {
+			ScorecardEntryUtil.getUtil().insertScorecard(mScorecard);
+		}
 	}
 
 	private void setupScorecardPager() {

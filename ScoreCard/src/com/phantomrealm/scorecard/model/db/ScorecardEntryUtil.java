@@ -56,11 +56,10 @@ public class ScorecardEntryUtil {
 	}
 
 	/**
-	 * Update an existing entry in the database with the given id
-	 * @param scorecardId denoting the row to be updated
+	 * Update an existing entry in the database representing a given {@link Scorecard}
 	 * @param scorecard
 	 */
-	public void updateScorecard(long scorecardId, Scorecard scorecard) {
+	public void updateScorecard(Scorecard scorecard) {
 		// get the db in write mode
 		SQLiteDatabase db = mHelper.getWritableDatabase();
 
@@ -70,14 +69,14 @@ public class ScorecardEntryUtil {
 		values.put(ScorecardEntry.COLUMN_DATE, System.currentTimeMillis());
 
 		// describe which row we want to update
-		String whereClause = ScorecardEntry._ID + " = " + scorecardId;
+		String whereClause = ScorecardEntry._ID + " = " + scorecard.getId();
 
 		// update the existing row
 		int rows = db.update(ScorecardEntry.TABLE_NAME, values, whereClause, null);
 		Log.d(TAG, "update " + rows + " rows.");
 
 		// update entries for performances
-		updatePerformances(scorecardId, scorecard.getPlayerScores());
+		updatePerformances(scorecard.getId(), scorecard.getPlayerScores());
 	}
 
 	/**
@@ -180,7 +179,7 @@ public class ScorecardEntryUtil {
 	 */
 	private Scorecard getScorecardFromCursor(Cursor cursor) {
 		long scorecardId = cursor.getLong(cursor.getColumnIndexOrThrow(ScorecardEntry._ID));
-//		long scorecardDate = cursor.getLong(cursor.getColumnIndexOrThrow(ScorecardEntry.COLUMN_DATE));
+		long scorecardDate = cursor.getLong(cursor.getColumnIndexOrThrow(ScorecardEntry.COLUMN_DATE));
 		long courseId = cursor.getLong(cursor.getColumnIndexOrThrow(ScorecardEntry.COLUMN_COURSE_ID));
 		Course course = CourseEntryUtil.getUtil().getCourseFromDatabase(courseId);
 
@@ -190,10 +189,11 @@ public class ScorecardEntryUtil {
 			players.add(player);
 		}
 
-		Scorecard scorecard = new Scorecard(scorecardId, course, players);
+		Scorecard scorecard = new Scorecard(scorecardId, scorecardDate, course, players);
 		for (Player player : players) {
 			scorecard.setScoresForPlayer(player, playerScores.get(player));
 		}
+
 		return scorecard;
 	}
 

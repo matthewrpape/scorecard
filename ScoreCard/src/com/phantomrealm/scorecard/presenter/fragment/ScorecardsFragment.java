@@ -1,10 +1,12 @@
 package com.phantomrealm.scorecard.presenter.fragment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,8 +18,11 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 
 import com.phantomrealm.scorecard.R;
+import com.phantomrealm.scorecard.model.Course;
+import com.phantomrealm.scorecard.model.Player;
 import com.phantomrealm.scorecard.model.Scorecard;
 import com.phantomrealm.scorecard.model.db.ScorecardEntryUtil;
+import com.phantomrealm.scorecard.presenter.activity.EditScorecardActivity;
 import com.phantomrealm.scorecard.view.listadapters.ScorecardAdapter;
 
 public class ScorecardsFragment extends Fragment {
@@ -42,7 +47,7 @@ public class ScorecardsFragment extends Fragment {
 		mListView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				// TODO - resume scorecard
+				launchEditScorecardActivity(mAdapter.getScorecard(position));
 			}
 		});
 		mListView.setOnItemLongClickListener(new OnItemLongClickListener() {
@@ -65,18 +70,23 @@ public class ScorecardsFragment extends Fragment {
 	}
 
 	/**
-	 * Launch the activity for editing a player
-	 * @param player the existing player to edit or null to create a new player
+	 * Launch the activity for editing a scorecard
+	 * @param scorecard to edit
 	 */
-//	private void launchEditPlayerActivity(Player player) {
-//		Intent toLaunch = new Intent(getActivity(), EditPlayerActivity.class);
-//		if (player != null) {
-//			toLaunch.putExtra(INTENT_EXTRA_PLAYER_ID_TAG, player.getId());
-//			toLaunch.putExtra(INTENT_EXTRA_PLAYER_NAME_TAG, player.getName());
-//		}
-//		
-//		startActivity(toLaunch);
-//	}
+	private void launchEditScorecardActivity(Scorecard scorecard) {
+		Course course = scorecard.getCourse();
+		List<Integer> playerIds = new ArrayList<Integer>();
+		List<String> playerNames = new ArrayList<String>();
+		for (Player player : scorecard.getPlayers()) {
+			playerIds.add((int) (long) player.getId());
+			playerNames.add(player.getName());
+		}
+
+		Intent toLaunch = EditScorecardActivity.makeIntent(getActivity(), course.getId(),
+				course.getName(), course.getParList(), playerIds, playerNames);
+
+		startActivity(toLaunch);
+	}
 
 	/**
 	 * Populate the list of players displayed to the user
