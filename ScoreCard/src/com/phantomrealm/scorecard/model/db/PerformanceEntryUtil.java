@@ -110,7 +110,7 @@ public class PerformanceEntryUtil {
 		Cursor cursor = getPerformanceIdsFromDatabase(db, scorecardId);
 
 		// convert database results into a list of performance ids
-		List<Long> performanceIds = getPerformanceIds(cursor);
+		List<Long> performanceIds = getPerformanceIdsFromResults(cursor);
 
 		// delete rows corresponding to performance ids
 		for (Long id : performanceIds) {
@@ -124,18 +124,40 @@ public class PerformanceEntryUtil {
 	 * @return
 	 */
 	public Map<Player, List<Integer>> getPerformancesFromDatabase(long scorecardId) {
-		// get database and query for entries associated with the specific scorecardId
+		// get database and query for entries associated with the specified scorecardId
 		SQLiteDatabase db = mHelper.getReadableDatabase();
 		Cursor cursor = getPerformanceResultsFromDatabase(db, scorecardId);
 
 		// convert database results into a map of players to score lists
-		Map<Player, List<Integer>> performances = getPerformanceResults(cursor);
+		Map<Player, List<Integer>> performances = getPerformancesFromResults(cursor);
 
 		// cleanup
 		cursor.close();
 		db.close();
 
 		return performances;
+	}
+
+	/**
+	 * Returns the id of the performance associated with a specified scorecard and player,
+	 *  or 0 if none is found;
+	 * @param scorecardId
+	 * @param playerId
+	 * @return
+	 */
+	public long getPerformanceIdFromDatabase(long scorecardId, long playerId) {
+		// get database and query for entries associated with the specified scorecard and player
+		SQLiteDatabase db = mHelper.getReadableDatabase();
+		Cursor cursor = getPerformanceIdResultsFromDatabase(db, scorecardId, playerId);
+
+		// convert database results into a map of players to score lists
+		long performanceId = getPerformanceIdFromResults(cursor);
+
+		// cleanup
+		cursor.close();
+		db.close();
+
+		return performanceId;
 	}
 
 	/**
@@ -149,6 +171,23 @@ public class PerformanceEntryUtil {
 		String[] projection = {PerformanceEntry._ID, PerformanceEntry.COLUMN_PLAYER_ID, PerformanceEntry.COLUMN_SCORES};
 		String whereClause = String.format("%s = ?", PerformanceEntry.COLUMN_SCORECARD_ID);
 		String[] whereValues = new String[] { Long.toString(scorecardId) };
+
+		// query the db
+		return db.query(PerformanceEntry.TABLE_NAME, projection, whereClause, whereValues, null, null, null);
+	}
+
+	/**
+	 * Query the database to get the list of performance ids that correspond to a specific scorecard and player.
+	 * @param db
+	 * @param scorecardId
+	 * @param playerId
+	 * @return
+	 */
+	private Cursor getPerformanceIdResultsFromDatabase(SQLiteDatabase db, long scorecardId, long playerId) {
+		// define which columns we are interested in
+		String[] projection = {PerformanceEntry._ID, PerformanceEntry.COLUMN_PLAYER_ID, PerformanceEntry.COLUMN_SCORES};
+		String whereClause = String.format("%s = ? AND %s = ?", PerformanceEntry.COLUMN_SCORECARD_ID, PerformanceEntry.COLUMN_PLAYER_ID);
+		String[] whereValues = new String[] { Long.toString(scorecardId), Long.toString(playerId) };
 
 		// query the db
 		return db.query(PerformanceEntry.TABLE_NAME, projection, whereClause, whereValues, null, null, null);
@@ -177,7 +216,7 @@ public class PerformanceEntryUtil {
 	 * @param cursor
 	 * @return
 	 */
-	private Map<Player, List<Integer>> getPerformanceResults(Cursor cursor) {
+	private Map<Player, List<Integer>> getPerformancesFromResults(Cursor cursor) {
 		HashMap<Player, List<Integer>> performances = new HashMap<Player, List<Integer>>();
 
 		cursor.moveToFirst();
@@ -192,11 +231,23 @@ public class PerformanceEntryUtil {
 	}
 
 	/**
+	 * Creates an id that corresponds to the performance in the first position of the cursor. The given
+	 *  cursor should only contain a single result. In the even that it contains more, subsequent results
+	 *  will be ignored. As a side effect the position of this cursor will be set to the first position.
+	 * @param cursor
+	 * @return
+	 */
+	private long getPerformanceIdFromResults(Cursor cursor) {
+		cursor.moveToFirst();
+		return getIdFromCursor(cursor);
+	}
+
+	/**
 	 * Creates a list of performance ids by iterating through the cursor starting at the first
 	 *  position (regardles of the position of the cursor pass into the function). As a side effect
 	 *  the position of this cursor will be modified (generally until it is past the final position).
 	 */
-	private List<Long> getPerformanceIds(Cursor cursor) {
+	private List<Long> getPerformanceIdsFromResults(Cursor cursor) {
 		List<Long> performanceIds = new ArrayList<Long>();
 
 		cursor.moveToFirst();

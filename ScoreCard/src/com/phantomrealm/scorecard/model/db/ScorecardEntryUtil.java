@@ -132,12 +132,16 @@ public class ScorecardEntryUtil {
 	}
 
 	/**
-	 * TODO - implement this!
+	 * Update existing entries for the given players and scorecard
 	 * @param scorecardId
 	 * @param scores
 	 */
 	private void updatePerformances(long scorecardId, Map<Player, List<Integer>> scores) {
-		// TODO - finish this
+		PerformanceEntryUtil perfUtil = PerformanceEntryUtil.getUtil();
+		for(Player player : scores.keySet()) {
+			long performanceId = perfUtil.getPerformanceIdFromDatabase(scorecardId, player.getId());
+			perfUtil.updatePerformance(performanceId, scorecardId, player.getId(), scores.get(player));
+		}
 	}
 
 	/**
