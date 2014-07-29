@@ -13,9 +13,9 @@ public class DatabaseUtils {
 			builder.append(value.toString());
 			builder.append(STRING_SEPARATOR);
 		}
-		String parString = builder.toString();
+		String listString = builder.toString();
 
-		return parString.substring(0, parString.length() - 1);
+		return listString.substring(0, listString.length() - 1);
 	}
 
 	public static List<Integer> buildListFromString(String listString) {

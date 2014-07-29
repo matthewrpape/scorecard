@@ -66,7 +66,7 @@ public class ScorecardEntryUtil {
 		// create a new mape of values, where column names are the keys
 		ContentValues values = new ContentValues();
 		values.put(ScorecardEntry.COLUMN_COURSE_ID, scorecard.getCourse().getId());
-		values.put(ScorecardEntry.COLUMN_DATE, System.currentTimeMillis());
+		values.put(ScorecardEntry.COLUMN_DATE, scorecard.getDate());
 
 		// describe which row we want to update
 		String whereClause = ScorecardEntry._ID + " = " + scorecard.getId();
