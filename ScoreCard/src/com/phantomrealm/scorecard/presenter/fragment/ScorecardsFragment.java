@@ -82,8 +82,8 @@ public class ScorecardsFragment extends Fragment {
 			playerNames.add(player.getName());
 		}
 
-		Intent toLaunch = EditScorecardActivity.makeIntent(getActivity(), course.getId(),
-				course.getName(), course.getParList(), playerIds, playerNames);
+		Intent toLaunch = EditScorecardActivity.makeIntent(getActivity(), scorecard.getId(), scorecard.getDate(),
+				course.getId(), course.getName(), course.getParList(), playerIds, playerNames);
 
 		startActivity(toLaunch);
 	}

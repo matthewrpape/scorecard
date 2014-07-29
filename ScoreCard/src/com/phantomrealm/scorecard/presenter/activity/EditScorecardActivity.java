@@ -21,6 +21,8 @@ import com.phantomrealm.scorecard.presenter.fragment.EditScorecardFragment;
  */
 public class EditScorecardActivity extends AbstractSingleFragmentActivity {
 
+	private static final String INTENT_EXTRA_SCORECARD_ID_TAG = "intent_extra_scorecard_id_tag";
+	private static final String INTENT_EXTRA_SCORECARD_DATE_TAG = "intent_extra_scorecard_date_tag";
 	private static final String INTENT_EXTRA_COURSE_ID_TAG = "intent_extra_course_id_tag";
 	private static final String INTENT_EXTRA_COURSE_NAME_TAG = "intent_extra_course_name_tag";
 	private static final String INTENT_EXTRA_COURSE_PARS_TAG = "intent_extra_course_pars_tag";
@@ -32,6 +34,8 @@ public class EditScorecardActivity extends AbstractSingleFragmentActivity {
 	@Override
 	protected Fragment createFragment() {
 		Intent intent = getIntent();
+		long scorecardId = intent.getLongExtra(INTENT_EXTRA_SCORECARD_ID_TAG, 0);
+		long scorecardDate = intent.getLongExtra(INTENT_EXTRA_SCORECARD_DATE_TAG, 0);
 		long courseId = intent.getLongExtra(INTENT_EXTRA_COURSE_ID_TAG, 0);
 		String courseName = intent.getStringExtra(INTENT_EXTRA_COURSE_NAME_TAG);
 		List<Integer> coursePars = intent.getIntegerArrayListExtra(INTENT_EXTRA_COURSE_PARS_TAG);
@@ -41,7 +45,7 @@ public class EditScorecardActivity extends AbstractSingleFragmentActivity {
 		List<String> playerNames = intent.getStringArrayListExtra(INTENT_EXTRA_PLAYER_NAMES_TAG);
 		List<Player> players = createPlayers(playerIds, playerNames);
 
-		Scorecard scorecard = new Scorecard(course, players);
+		Scorecard scorecard = new Scorecard(scorecardId, scorecardDate, course, players);
 		mFragment = new EditScorecardFragment(scorecard);
 		return mFragment;
 	}
@@ -67,6 +71,20 @@ public class EditScorecardActivity extends AbstractSingleFragmentActivity {
 
 	public static Intent makeIntent(Context context, long courseId, String courseName, List<Integer> coursePars, List<Integer> playerIds, List<String> playerNames) {
 		Intent intent = new Intent(context,EditScorecardActivity.class);
+		intent.putExtra(INTENT_EXTRA_COURSE_ID_TAG, courseId);
+		intent.putExtra(INTENT_EXTRA_COURSE_NAME_TAG, courseName);
+		intent.putIntegerArrayListExtra(INTENT_EXTRA_COURSE_PARS_TAG, (ArrayList<Integer>)coursePars);
+		intent.putIntegerArrayListExtra(INTENT_EXTRA_PLAYER_IDS_TAG, (ArrayList<Integer>)playerIds);
+		intent.putStringArrayListExtra(INTENT_EXTRA_PLAYER_NAMES_TAG, (ArrayList<String>)playerNames);
+
+		return intent;
+	}
+
+	public static Intent makeIntent(Context context, long scorecardId, long scorecardDate, long courseId, String courseName,
+			List<Integer> coursePars, List<Integer> playerIds, List<String> playerNames) {
+		Intent intent = new Intent(context,EditScorecardActivity.class);
+		intent.putExtra(INTENT_EXTRA_SCORECARD_ID_TAG, scorecardId);
+		intent.putExtra(INTENT_EXTRA_SCORECARD_DATE_TAG, scorecardDate);
 		intent.putExtra(INTENT_EXTRA_COURSE_ID_TAG, courseId);
 		intent.putExtra(INTENT_EXTRA_COURSE_NAME_TAG, courseName);
 		intent.putIntegerArrayListExtra(INTENT_EXTRA_COURSE_PARS_TAG, (ArrayList<Integer>)coursePars);

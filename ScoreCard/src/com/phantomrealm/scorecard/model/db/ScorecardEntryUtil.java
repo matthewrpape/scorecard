@@ -73,7 +73,7 @@ public class ScorecardEntryUtil {
 
 		// update the existing row
 		int rows = db.update(ScorecardEntry.TABLE_NAME, values, whereClause, null);
-		Log.d(TAG, "update " + rows + " rows.");
+		Log.d(TAG, "updated " + rows + " rows.");
 
 		// update entries for performances
 		updatePerformances(scorecard.getId(), scorecard.getPlayerScores());
