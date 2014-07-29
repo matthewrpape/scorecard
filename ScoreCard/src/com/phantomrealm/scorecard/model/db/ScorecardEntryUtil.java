@@ -260,7 +260,7 @@ public class ScorecardEntryUtil {
 	 * @return
 	 */
 	private Player getPlayerFromCursor(Cursor cursor) {
-		long playerId = cursor.getLong(cursor.getColumnIndexOrThrow(PerformanceEntry._ID));
+		long playerId = cursor.getLong(cursor.getColumnIndexOrThrow(PerformanceEntry.COLUMN_PLAYER_ID));
 		List<Player> players = PlayerEntryUtil.getUtil().getPlayersFromDatabase();
 		Player returnPlayer = null;
 		for (Player player : players) {
