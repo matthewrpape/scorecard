@@ -12,7 +12,7 @@
     <string name="new_game">New Game</string>
     <string name="players">Players</string>
     <string name="courses">Courses</string>
-    <string name="scorecards">Old Scorecards</string>
+    <string name="scorecards">Scorecards</string>
 
     <!-- edit menus -->
     <string name="name">Name</string>

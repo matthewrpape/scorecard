@@ -70,7 +70,7 @@ public class EditScorecardFragment extends Fragment {
 
 	private void setupScorecardPager() {
 		Map<Player, List<Integer>> playerScores = mScorecard.getPlayerScores();
-		Map<Player, List<Integer>> playerAverages = getPlayerAverages(playerScores.keySet(), mScorecard.getCourse());
+		Map<Player, List<Integer>> playerAverages = getAveragesForPlayers(playerScores.keySet(), mScorecard.getCourse());
 		mAdapter = new ScorecardPlayerPagerAdapter(mScorecard.getPlayers(), mScorecard.getCourse().getParList(), playerScores, playerAverages);
 		mViewPager.setAdapter(mAdapter);
 
@@ -113,10 +113,10 @@ public class EditScorecardFragment extends Fragment {
 		});
 	}
 
-	private Map<Player, List<Integer>> getPlayerAverages(Set<Player> players, Course course) {
+	private Map<Player, List<Integer>> getAveragesForPlayers(Set<Player> players, Course course) {
 		Map<Player, List<Integer>> playerAverages = new HashMap<Player, List<Integer>>();
 		for (Player player : players) {
-			List<Integer> averages = getPlayerAveragesForCourse(player, course);
+			List<Integer> averages = getAveragesForPlayer(player, course);
 			playerAverages.put(player, averages);
 		}
 
@@ -124,7 +124,7 @@ public class EditScorecardFragment extends Fragment {
 	}
 
 	// TODO - load from db
-	private List<Integer> getPlayerAveragesForCourse(Player player, Course course) {
+	private List<Integer> getAveragesForPlayer(Player player, Course course) {
 		List<Integer> averages = new ArrayList<Integer>();
 		for (int i = 0; i < course.getHoleCount(); ++i) {
 			averages.add(null);

@@ -8,7 +8,7 @@
     <TextView
             android:id="@+id/scorecard_menu_title_text_view"
             style="@style/text_title"
-            android:text="@string/players" />
+            android:text="@string/scorecards" />
 
 	<ListView 
         android:id="@+id/scorecard_menu_scorecard_list"

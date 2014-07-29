@@ -1,5 +1,6 @@
 package com.phantomrealm.scorecard.presenter.activity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +24,7 @@ public class EditScorecardActivity extends AbstractSingleFragmentActivity {
 
 	private static final String INTENT_EXTRA_SCORECARD_ID_TAG = "intent_extra_scorecard_id_tag";
 	private static final String INTENT_EXTRA_SCORECARD_DATE_TAG = "intent_extra_scorecard_date_tag";
+	private static final String INTENT_EXTRA_SCORECARD_SCORES_TAG = "intent_extra_scorecard_scores";
 	private static final String INTENT_EXTRA_COURSE_ID_TAG = "intent_extra_course_id_tag";
 	private static final String INTENT_EXTRA_COURSE_NAME_TAG = "intent_extra_course_name_tag";
 	private static final String INTENT_EXTRA_COURSE_PARS_TAG = "intent_extra_course_pars_tag";
@@ -36,16 +38,22 @@ public class EditScorecardActivity extends AbstractSingleFragmentActivity {
 		Intent intent = getIntent();
 		long scorecardId = intent.getLongExtra(INTENT_EXTRA_SCORECARD_ID_TAG, 0);
 		long scorecardDate = intent.getLongExtra(INTENT_EXTRA_SCORECARD_DATE_TAG, 0);
+		Serializable scores = intent.getSerializableExtra(INTENT_EXTRA_SCORECARD_SCORES_TAG);
 		long courseId = intent.getLongExtra(INTENT_EXTRA_COURSE_ID_TAG, 0);
 		String courseName = intent.getStringExtra(INTENT_EXTRA_COURSE_NAME_TAG);
 		List<Integer> coursePars = intent.getIntegerArrayListExtra(INTENT_EXTRA_COURSE_PARS_TAG);
-		Course course = new Course(courseId, courseName, coursePars);
-
 		List<Integer> playerIds = intent.getIntegerArrayListExtra(INTENT_EXTRA_PLAYER_IDS_TAG);
 		List<String> playerNames = intent.getStringArrayListExtra(INTENT_EXTRA_PLAYER_NAMES_TAG);
+
+		List<List<Integer>> scorecardScores = createScorecardScores(scores);
+		Course course = new Course(courseId, courseName, coursePars);
 		List<Player> players = createPlayers(playerIds, playerNames);
 
 		Scorecard scorecard = new Scorecard(scorecardId, scorecardDate, course, players);
+		for (int i = 0; i < players.size(); ++i) {
+			scorecard.setScoresForPlayer(players.get(i), scorecardScores.get(i));
+		}
+
 		mFragment = new EditScorecardFragment(scorecard);
 		return mFragment;
 	}
@@ -80,11 +88,12 @@ public class EditScorecardActivity extends AbstractSingleFragmentActivity {
 		return intent;
 	}
 
-	public static Intent makeIntent(Context context, long scorecardId, long scorecardDate, long courseId, String courseName,
-			List<Integer> coursePars, List<Integer> playerIds, List<String> playerNames) {
+	public static Intent makeIntent(Context context, long scorecardId, long scorecardDate, List<List<Integer>> scorecardScores,
+			long courseId, String courseName, List<Integer> coursePars, List<Integer> playerIds, List<String> playerNames) {
 		Intent intent = new Intent(context,EditScorecardActivity.class);
 		intent.putExtra(INTENT_EXTRA_SCORECARD_ID_TAG, scorecardId);
 		intent.putExtra(INTENT_EXTRA_SCORECARD_DATE_TAG, scorecardDate);
+		intent.putExtra(INTENT_EXTRA_SCORECARD_SCORES_TAG, (ArrayList<List<Integer>>) scorecardScores);
 		intent.putExtra(INTENT_EXTRA_COURSE_ID_TAG, courseId);
 		intent.putExtra(INTENT_EXTRA_COURSE_NAME_TAG, courseName);
 		intent.putIntegerArrayListExtra(INTENT_EXTRA_COURSE_PARS_TAG, (ArrayList<Integer>)coursePars);
@@ -94,7 +103,19 @@ public class EditScorecardActivity extends AbstractSingleFragmentActivity {
 		return intent;
 	}
 
-	public List<Player> createPlayers(List<Integer> playerIds, List<String> playerNames) {
+	@SuppressWarnings("unchecked")
+	private List<List<Integer>> createScorecardScores(Serializable scores) {
+		List<List<Integer>> scorecardScores = null;
+		try {
+			scorecardScores = (List<List<Integer>>) scores;
+		} catch (Exception exception) {
+			scorecardScores = new ArrayList<List<Integer>>();
+		}
+
+		return scorecardScores;
+	}
+
+	private List<Player> createPlayers(List<Integer> playerIds, List<String> playerNames) {
 		List<Player> players = new ArrayList<Player>();
 		for (int i = 0; i < playerIds.size(); ++i) {
 			Player player = new Player(playerIds.get(i), playerNames.get(i));

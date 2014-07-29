@@ -202,6 +202,7 @@ public class PerformanceEntryUtil {
 		cursor.moveToFirst();
 		while (!cursor.isAfterLast()) {
 			performanceIds.add(getIdFromCursor(cursor));
+			cursor.moveToNext();
 		}
 
 		return performanceIds;

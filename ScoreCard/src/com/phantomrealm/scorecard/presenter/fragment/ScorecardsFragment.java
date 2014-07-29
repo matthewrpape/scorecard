@@ -1,6 +1,7 @@
 package com.phantomrealm.scorecard.presenter.fragment;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import android.app.AlertDialog;
@@ -77,12 +78,14 @@ public class ScorecardsFragment extends Fragment {
 		Course course = scorecard.getCourse();
 		List<Integer> playerIds = new ArrayList<Integer>();
 		List<String> playerNames = new ArrayList<String>();
+		List<List<Integer>> playerScores = new ArrayList<List<Integer>>();
 		for (Player player : scorecard.getPlayers()) {
 			playerIds.add((int) (long) player.getId());
 			playerNames.add(player.getName());
+			playerScores.add(scorecard.getPlayerScores().get(player));
 		}
 
-		Intent toLaunch = EditScorecardActivity.makeIntent(getActivity(), scorecard.getId(), scorecard.getDate(),
+		Intent toLaunch = EditScorecardActivity.makeIntent(getActivity(), scorecard.getId(), scorecard.getDate(), playerScores,
 				course.getId(), course.getName(), course.getParList(), playerIds, playerNames);
 
 		startActivity(toLaunch);
