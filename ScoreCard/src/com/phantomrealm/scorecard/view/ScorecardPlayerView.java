@@ -11,8 +11,6 @@ import com.phantomrealm.scorecard.model.Player;
 
 public class ScorecardPlayerView extends RelativeLayout {
 
-	private static final String POSITIVE_PREFIX = "+";
-
 	public interface PlayerScoreAdjustmentListener {
 		public void adjustScore(Player player, int adjustment);
 	}
@@ -69,7 +67,8 @@ public class ScorecardPlayerView extends RelativeLayout {
 	}
 
 	public void setCourseScore(Integer score) {
-		String totalString = score < 0 ? String.valueOf(score) : POSITIVE_PREFIX + String.valueOf(score);
+		String positivePrefix = this.getResources().getString(R.string.positive_prefix);
+		String totalString = score < 0 ? String.valueOf(score) : positivePrefix + String.valueOf(score);
 		((TextView) findViewById(R.id.view_scorecard_player_total_score)).setText(totalString);
 	}
 

@@ -24,9 +24,9 @@ import com.phantomrealm.scorecard.model.Scorecard;
 import com.phantomrealm.scorecard.model.db.ScorecardEntryUtil;
 import com.phantomrealm.scorecard.view.pageradapters.ScorecardPlayerPagerAdapter;
 
-public class ScorecardFragment extends Fragment {
+public class EditScorecardFragment extends Fragment {
 
-	private static final String TAG = ScorecardFragment.class.getSimpleName();
+	private static final String TAG = EditScorecardFragment.class.getSimpleName();
 
 	private Scorecard mScorecard;
 	private ViewPager mViewPager;
@@ -34,7 +34,7 @@ public class ScorecardFragment extends Fragment {
 	private TextView mHoleLabel;
 	private TextView mParLabel;
 
-	public ScorecardFragment(Scorecard scorecard) {
+	public EditScorecardFragment(Scorecard scorecard) {
 		mScorecard = scorecard;
 	}
 
@@ -61,12 +61,16 @@ public class ScorecardFragment extends Fragment {
 	}
 
 	public void saveScorecard() {
-		ScorecardEntryUtil.getUtil().insertScorecard(mScorecard);
+		if (mScorecard.getId() > 0 && mScorecard.getDate() > 0) {
+			ScorecardEntryUtil.getUtil().updateScorecard(mScorecard);
+		} else {
+			ScorecardEntryUtil.getUtil().insertScorecard(mScorecard);
+		}
 	}
 
 	private void setupScorecardPager() {
 		Map<Player, List<Integer>> playerScores = mScorecard.getPlayerScores();
-		Map<Player, List<Integer>> playerAverages = getPlayerAverages(playerScores.keySet(), mScorecard.getCourse());
+		Map<Player, List<Integer>> playerAverages = getAveragesForPlayers(playerScores.keySet(), mScorecard.getCourse());
 		mAdapter = new ScorecardPlayerPagerAdapter(mScorecard.getPlayers(), mScorecard.getCourse().getParList(), playerScores, playerAverages);
 		mViewPager.setAdapter(mAdapter);
 
@@ -109,10 +113,10 @@ public class ScorecardFragment extends Fragment {
 		});
 	}
 
-	private Map<Player, List<Integer>> getPlayerAverages(Set<Player> players, Course course) {
+	private Map<Player, List<Integer>> getAveragesForPlayers(Set<Player> players, Course course) {
 		Map<Player, List<Integer>> playerAverages = new HashMap<Player, List<Integer>>();
 		for (Player player : players) {
-			List<Integer> averages = getPlayerAveragesForCourse(player, course);
+			List<Integer> averages = getAveragesForPlayer(player, course);
 			playerAverages.put(player, averages);
 		}
 
@@ -120,7 +124,7 @@ public class ScorecardFragment extends Fragment {
 	}
 
 	// TODO - load from db
-	private List<Integer> getPlayerAveragesForCourse(Player player, Course course) {
+	private List<Integer> getAveragesForPlayer(Player player, Course course) {
 		List<Integer> averages = new ArrayList<Integer>();
 		for (int i = 0; i < course.getHoleCount(); ++i) {
 			averages.add(null);

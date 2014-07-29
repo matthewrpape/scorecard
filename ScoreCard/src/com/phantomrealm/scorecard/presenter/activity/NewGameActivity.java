@@ -59,7 +59,7 @@ public class NewGameActivity extends Activity {
 	}
 
 	private void launchScorecardActivity() {
-		Intent toLaunch = ScorecardActivity.makeIntent(this, mCourseId, mCourseName, mCoursePars, mPlayerIds, mPlayerNames);
+		Intent toLaunch = EditScorecardActivity.makeIntent(this, mCourseId, mCourseName, mCoursePars, mPlayerIds, mPlayerNames);
 		startActivity(toLaunch);
 	}
 

@@ -13,6 +13,7 @@ import com.phantomrealm.scorecard.R;
 import com.phantomrealm.scorecard.presenter.activity.CoursesActivity;
 import com.phantomrealm.scorecard.presenter.activity.NewGameActivity;
 import com.phantomrealm.scorecard.presenter.activity.PlayersActivity;
+import com.phantomrealm.scorecard.presenter.activity.ScorecardsActivity;
 
 public class MainFragment extends Fragment {
 
@@ -53,7 +54,14 @@ public class MainFragment extends Fragment {
 				launchCoursesActivity();
 			}
 		});
-		
+
+		view.findViewById(R.id.menu_button_scorecards).setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				launchScorecardsActivity();
+			}
+		});
+
 		return view;
 	}
 
@@ -81,4 +89,11 @@ public class MainFragment extends Fragment {
 		startActivity(toLaunch);
 	}
 
+	/**
+	 * Launch the activity for viewing existing scorecards
+	 */
+	private void launchScorecardsActivity() {
+		Intent toLaunch = new Intent(getActivity(), ScorecardsActivity.class);
+		startActivity(toLaunch);
+	}
 }

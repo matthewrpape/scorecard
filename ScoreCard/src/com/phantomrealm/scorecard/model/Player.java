@@ -1,5 +1,6 @@
 package com.phantomrealm.scorecard.model;
 
+
 public class Player {
 
 	private long mId;
