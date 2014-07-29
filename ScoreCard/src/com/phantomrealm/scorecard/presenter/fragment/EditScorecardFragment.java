@@ -24,9 +24,9 @@ import com.phantomrealm.scorecard.model.Scorecard;
 import com.phantomrealm.scorecard.model.db.ScorecardEntryUtil;
 import com.phantomrealm.scorecard.view.pageradapters.ScorecardPlayerPagerAdapter;
 
-public class ScorecardFragment extends Fragment {
+public class EditScorecardFragment extends Fragment {
 
-	private static final String TAG = ScorecardFragment.class.getSimpleName();
+	private static final String TAG = EditScorecardFragment.class.getSimpleName();
 
 	private Scorecard mScorecard;
 	private ViewPager mViewPager;
@@ -34,7 +34,7 @@ public class ScorecardFragment extends Fragment {
 	private TextView mHoleLabel;
 	private TextView mParLabel;
 
-	public ScorecardFragment(Scorecard scorecard) {
+	public EditScorecardFragment(Scorecard scorecard) {
 		mScorecard = scorecard;
 	}
 

@@ -1,0 +1,22 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fragmentContainer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" 
+    android:padding="@dimen/margin_size_small"
+    android:background="@drawable/list_item_bg">
+
+    <TextView
+        android:id="@+id/list_scorecard_course"
+        style="@style/text_secondary" />
+
+    <TextView
+        android:id="@+id/list_scorecard_date"
+        style="@style/text_tertiary"
+        android:textColor="@color/blue" />
+
+    <TextView
+        android:id="@+id/list_scorecard_players"
+        style="@style/text_tertiary"
+        android:textColor="@color/blue" />
+</LinearLayout>

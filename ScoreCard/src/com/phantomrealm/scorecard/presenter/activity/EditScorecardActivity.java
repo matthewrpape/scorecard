@@ -12,14 +12,14 @@ import com.phantomrealm.scorecard.R;
 import com.phantomrealm.scorecard.model.Course;
 import com.phantomrealm.scorecard.model.Player;
 import com.phantomrealm.scorecard.model.Scorecard;
-import com.phantomrealm.scorecard.presenter.fragment.ScorecardFragment;
+import com.phantomrealm.scorecard.presenter.fragment.EditScorecardFragment;
 
 /**
  * Activity used to view an active Scorecard/game
  * 
  * @author mpape
  */
-public class ScorecardActivity extends AbstractSingleFragmentActivity {
+public class EditScorecardActivity extends AbstractSingleFragmentActivity {
 
 	private static final String INTENT_EXTRA_COURSE_ID_TAG = "intent_extra_course_id_tag";
 	private static final String INTENT_EXTRA_COURSE_NAME_TAG = "intent_extra_course_name_tag";
@@ -27,7 +27,7 @@ public class ScorecardActivity extends AbstractSingleFragmentActivity {
 	private static final String INTENT_EXTRA_PLAYER_IDS_TAG = "intent_extra_player_ids_tag";
 	private static final String INTENT_EXTRA_PLAYER_NAMES_TAG = "intent_extra_player_names_tag";
 
-	private ScorecardFragment mFragment;
+	private EditScorecardFragment mFragment;
 
 	@Override
 	protected Fragment createFragment() {
@@ -42,7 +42,7 @@ public class ScorecardActivity extends AbstractSingleFragmentActivity {
 		List<Player> players = createPlayers(playerIds, playerNames);
 
 		Scorecard scorecard = new Scorecard(course, players);
-		mFragment = new ScorecardFragment(scorecard);
+		mFragment = new EditScorecardFragment(scorecard);
 		return mFragment;
 	}
 
@@ -66,7 +66,7 @@ public class ScorecardActivity extends AbstractSingleFragmentActivity {
 	}
 
 	public static Intent makeIntent(Context context, long courseId, String courseName, List<Integer> coursePars, List<Integer> playerIds, List<String> playerNames) {
-		Intent intent = new Intent(context,ScorecardActivity.class);
+		Intent intent = new Intent(context,EditScorecardActivity.class);
 		intent.putExtra(INTENT_EXTRA_COURSE_ID_TAG, courseId);
 		intent.putExtra(INTENT_EXTRA_COURSE_NAME_TAG, courseName);
 		intent.putIntegerArrayListExtra(INTENT_EXTRA_COURSE_PARS_TAG, (ArrayList<Integer>)coursePars);
