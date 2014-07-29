@@ -12,7 +12,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.phantomrealm.scorecard.model.Player;
-import com.phantomrealm.scorecard.util.db.DatabaseContract.CourseEntry;
 import com.phantomrealm.scorecard.util.db.DatabaseContract.PerformanceEntry;
 import com.phantomrealm.scorecard.util.db.DatabaseHelper;
 import com.phantomrealm.scorecard.util.db.DatabaseUtils;
@@ -152,7 +151,7 @@ public class PerformanceEntryUtil {
 		String[] whereValues = new String[] { Long.toString(scorecardId) };
 
 		// query the db
-		return db.query(CourseEntry.TABLE_NAME, projection, whereClause, whereValues, null, null, null);
+		return db.query(PerformanceEntry.TABLE_NAME, projection, whereClause, whereValues, null, null, null);
 	}
 
 	/**
@@ -168,7 +167,7 @@ public class PerformanceEntryUtil {
 		String[] whereValues = new String[] { Long.toString(scorecardId) };
 
 		// query the db
-		return db.query(CourseEntry.TABLE_NAME, projection, whereClause, whereValues, null, null, null);
+		return db.query(PerformanceEntry.TABLE_NAME, projection, whereClause, whereValues, null, null, null);
 	}
 
 	/**
@@ -215,7 +214,7 @@ public class PerformanceEntryUtil {
 	 * @return
 	 */
 	private Player getPlayerFromCursor(Cursor cursor) {
-		long playerId = cursor.getLong(cursor.getColumnIndexOrThrow(PerformanceEntry._ID));
+		long playerId = cursor.getLong(cursor.getColumnIndexOrThrow(PerformanceEntry.COLUMN_PLAYER_ID));
 		List<Player> players = PlayerEntryUtil.getUtil().getPlayersFromDatabase();
 		Player returnPlayer = null;
 		for (Player player : players) {
