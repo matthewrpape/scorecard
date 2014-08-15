@@ -121,6 +121,26 @@ public class ScorecardEntryUtil {
 	}
 
 	/**
+	 * Generates a list containing the ids for each scorecard for a specific course
+	 * @param courseId
+	 * @return
+	 */
+	public List<Long> getScorecardIdsFromDatabase(long courseId) {
+		// get database and query for scorecard ids that took place at the specified course
+		SQLiteDatabase db = mHelper.getReadableDatabase();
+		Cursor cursor = getScorecardIdResultsFromDatabase(db, courseId);
+
+		// convert database results into a list of Scorecard ids
+		List<Long> scorecardIds = getScorecardIdsFromResults(cursor);
+
+		// cleanup
+		cursor.close();
+		db.close();
+
+		return scorecardIds;
+	}
+
+	/**
 	 * Create performance entries for the given players, and associate them with a specific scorecard.
 	 * @param scorecardId
 	 * @param scores
@@ -158,6 +178,23 @@ public class ScorecardEntryUtil {
 	}
 
 	/**
+	 * Query the database to get the list containing the ids of each scorecard that occured at
+	 *  a specified course
+	 * @param db
+	 * @param courseId
+	 * @return
+	 */
+	private Cursor getScorecardIdResultsFromDatabase(SQLiteDatabase db, long courseId) {
+		// define which columns we are interested in
+		String[] projection = {ScorecardEntry._ID};
+		String whereClause = String.format("%s = ?", ScorecardEntry.COLUMN_COURSE_ID);
+		String[] whereValues = new String[] { Long.toString(courseId) };
+
+		// query the db
+		return db.query(ScorecardEntry.TABLE_NAME, projection, whereClause, whereValues, null, null, null);
+	}
+
+	/**
 	 * Creates a list of scorecards by iterating through the cursor starting at the first position
 	 *  (regardless of the position of the cursor passed into the function). As a side effect the
 	 *  position of this cursor will be modified (generally until it is past the final position).
@@ -174,6 +211,25 @@ public class ScorecardEntryUtil {
 		}
 
 		return scorecards;
+	}
+
+	/**
+	 * Creates a list of ids by iterating through the cursor starting at the first position
+	 *  (regardless of the position of the cursor passed into the function). As a side effect
+	 *  the position of this cursor will be modified (generally until it is past the final position).
+	 * @param cursor
+	 * @return
+	 */
+	private List<Long> getScorecardIdsFromResults(Cursor cursor) {
+		List<Long> scorecardIds = new ArrayList<Long>();
+
+		cursor.moveToFirst();
+		while (!cursor.isAfterLast()) {
+			scorecardIds.add(getScorecardIdFromCursor(cursor));
+			cursor.moveToNext();
+		}
+
+		return scorecardIds;
 	}
 
 	/**
@@ -201,4 +257,14 @@ public class ScorecardEntryUtil {
 		return scorecard;
 	}
 
+	/**
+	 * Retrieves an id from cursor at its current position
+	 * @param cursor
+	 * @return
+	 */
+	private long getScorecardIdFromCursor(Cursor cursor) {
+		long scorecardId = cursor.getLong(cursor.getColumnIndexOrThrow(ScorecardEntry._ID));
+
+		return scorecardId;
+	}
 }

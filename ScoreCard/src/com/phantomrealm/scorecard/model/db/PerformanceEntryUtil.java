@@ -161,6 +161,31 @@ public class PerformanceEntryUtil {
 	}
 
 	/**
+	 * Returns a list containing the average score of a particular player for each hole of a
+	 *  particular course
+	 * @param playerId
+	 * @param courseId
+	 * @return
+	 */
+	public List<Integer> getPerformanceAveragesFromDatabase(long playerId, long courseId) {
+		// get database and query for entries associated with the specified player and course
+		SQLiteDatabase db = mHelper.getReadableDatabase();
+		Cursor cursor = getPerformanceScoreResultsFromDatabase(db, playerId, courseId);
+
+		// convert database results into a list of lists of scores
+		List<List<Integer>> performanceScores = getPerformanceScoresFromResults(cursor);
+
+		// convert scores into averages
+		List<Integer> performanceAverages = getAveragesFromScores(performanceScores);
+
+		// cleanup
+		cursor.close();
+		db.close();
+
+		return performanceAverages;
+	}
+
+	/**
 	 * Query the database to get the list of performances that correspond to a specific scorecard.
 	 * @param db
 	 * @param scorecardId
@@ -210,6 +235,27 @@ public class PerformanceEntryUtil {
 	}
 
 	/**
+	 * Query the database to get a list of past performance scores for a particular player on a
+	 *  particular course.
+	 * @param db
+	 * @param playerId
+	 * @param courseId
+	 * @return cursor to database results, or null if none exist
+	 */
+	private Cursor getPerformanceScoreResultsFromDatabase(SQLiteDatabase db, long playerId, long courseId) {
+		// find out which scorecards occured at the specified course
+		List<Long> scorecardIds = ScorecardEntryUtil.getUtil().getScorecardIdsFromDatabase(courseId);
+
+		// define which columns we are interested in
+		String[] projection = {PerformanceEntry.COLUMN_SCORES};
+		String whereClause = String.format("%s IN (%s) AND %s = '%s'", PerformanceEntry.COLUMN_SCORECARD_ID,
+		        DatabaseUtils.buildStringFromList(scorecardIds), PerformanceEntry.COLUMN_PLAYER_ID, String.valueOf(playerId));
+
+		// query the db
+		return db.query(PerformanceEntry.TABLE_NAME, projection, whereClause, null, null, null, null);
+	}
+
+	/**
 	 * Creates a map from players to scores by iterating through the cursor starting at the first
 	 *  position (regardless of the position of the cursor passed into the function). As a side effect
 	 *  the position of this cursor will be modified (generally until it is past the final position).
@@ -244,7 +290,7 @@ public class PerformanceEntryUtil {
 
 	/**
 	 * Creates a list of performance ids by iterating through the cursor starting at the first
-	 *  position (regardles of the position of the cursor pass into the function). As a side effect
+	 *  position (regardless of the position of the cursor passed into the function). As a side effect
 	 *  the position of this cursor will be modified (generally until it is past the final position).
 	 */
 	private List<Long> getPerformanceIdsFromResults(Cursor cursor) {
@@ -257,6 +303,25 @@ public class PerformanceEntryUtil {
 		}
 
 		return performanceIds;
+	}
+
+	/**
+	 * Creates a list containing lists of scores by iterating through the cursor starting at the first
+	 *  position (regardless of the position of the cursor passed into the function.) As a side effect
+	 *  the position of this cursor will be modified (generally until it is past the final position).
+	 * @param cursor
+	 * @return
+	 */
+	private List<List<Integer>> getPerformanceScoresFromResults(Cursor cursor) {
+		List<List<Integer>> performanceScores = new ArrayList<List<Integer>>();
+
+		cursor.moveToFirst();
+		while (!cursor.isAfterLast()) {
+			performanceScores.add(getScoresFromCursor(cursor));
+			cursor.moveToNext();
+		}
+
+		return performanceScores;
 	}
 
 	/**
@@ -300,5 +365,39 @@ public class PerformanceEntryUtil {
 		long id = cursor.getLong(cursor.getColumnIndexOrThrow(PerformanceEntry._ID));
 
 		return id;
+	}
+
+	/**
+	 * Creates a list of averages for each hole, based on a list of list of scores for each hole
+	 * @param performanceScores
+	 * @return
+	 */
+	private List<Integer> getAveragesFromScores(List<List<Integer>> performanceScores) {
+		// initialize list of averages at 0
+		List<Integer> performanceAverages = new ArrayList<Integer>();
+		if (performanceScores.size() > 0) {
+			int holes = performanceScores.get(0).size();
+			for (int i = 0; i < holes; ++i) {
+				performanceAverages.add(0);
+			}
+	
+			// total the scores for each hole from each performance
+			int performances = performanceScores.size();
+			for (int perf = 0; perf < performances; ++perf) {
+				for (int hole = 0; hole < holes; ++hole) {
+					int previousScore = performanceAverages.get(hole);
+					int newScore = performanceScores.get(perf).get(hole);
+					performanceAverages.set(hole, previousScore + newScore);
+				}
+			}
+	
+			// average the scores for each hole
+			for (int hole = 0; hole < holes; ++hole) {
+				int previousScore = performanceAverages.get(hole);
+				performanceAverages.set(hole, previousScore / performances);
+			}
+		}
+
+		return performanceAverages;
 	}
 }
