@@ -50,8 +50,6 @@ public class EditScorecardActivity extends AbstractSingleFragmentActivity {
 		List<Player> players = createPlayers(playerIds, playerNames);
 
 		Scorecard scorecard = new Scorecard(scorecardId, scorecardDate, course, players);
-		System.out.println(scorecardScores);
-		System.out.println(scorecardScores != null);
 		for (int i = 0; i < scorecardScores.size(); ++i) {
 			scorecard.setScoresForPlayer(players.get(i), scorecardScores.get(i));
 		}

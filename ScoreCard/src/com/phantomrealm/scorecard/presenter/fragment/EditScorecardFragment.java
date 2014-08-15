@@ -1,10 +1,8 @@
 package com.phantomrealm.scorecard.presenter.fragment;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -21,6 +19,7 @@ import com.phantomrealm.scorecard.R;
 import com.phantomrealm.scorecard.model.Course;
 import com.phantomrealm.scorecard.model.Player;
 import com.phantomrealm.scorecard.model.Scorecard;
+import com.phantomrealm.scorecard.model.db.PerformanceEntryUtil;
 import com.phantomrealm.scorecard.model.db.ScorecardEntryUtil;
 import com.phantomrealm.scorecard.view.pageradapters.ScorecardPlayerPagerAdapter;
 
@@ -70,7 +69,7 @@ public class EditScorecardFragment extends Fragment {
 
 	private void setupScorecardPager() {
 		Map<Player, List<Integer>> playerScores = mScorecard.getPlayerScores();
-		Map<Player, List<Integer>> playerAverages = getAveragesForPlayers(playerScores.keySet(), mScorecard.getCourse());
+		Map<Player, List<Integer>> playerAverages = getAveragesForPlayers(mScorecard.getPlayers(), mScorecard.getCourse(), mScorecard.getId());
 		mAdapter = new ScorecardPlayerPagerAdapter(mScorecard.getPlayers(), mScorecard.getCourse().getParList(), playerScores, playerAverages);
 		mViewPager.setAdapter(mAdapter);
 
@@ -97,6 +96,10 @@ public class EditScorecardFragment extends Fragment {
 		mParLabel.setText(String.valueOf(mScorecard.getCourse().getParList().get(holeIndex)));
 	}
 
+	/**
+	 * Sets the click listeners for the buttons which advance and regress the viewpager.
+	 * @param parentView
+	 */
 	private void setPagerButtons(View parentView) {
 		parentView.findViewById(R.id.scorecard_next_hole_button).setOnClickListener(new OnClickListener() {
 			@Override
@@ -113,24 +116,44 @@ public class EditScorecardFragment extends Fragment {
 		});
 	}
 
-	private Map<Player, List<Integer>> getAveragesForPlayers(Set<Player> players, Course course) {
+	/**
+	 * Generates a map between players and a list of their average scores for each hole on a
+	 *  specified course.
+	 * @param players
+	 * @param course
+	 * @param scorecardId of the current scorecard. Scores form the current scorecard do not
+	 *  factor when calculating averages.
+	 * @return
+	 */
+	private Map<Player, List<Integer>> getAveragesForPlayers(List<Player> players, Course course, long scorecardId) {
 		Map<Player, List<Integer>> playerAverages = new HashMap<Player, List<Integer>>();
 		for (Player player : players) {
-			List<Integer> averages = getAveragesForPlayer(player, course);
+			List<Integer> averages = getAveragesForPlayer(player.getId(), course, scorecardId);
 			playerAverages.put(player, averages);
 		}
 
 		return playerAverages;
 	}
 
-	// TODO - load from db
-	private List<Integer> getAveragesForPlayer(Player player, Course course) {
-		List<Integer> averages = new ArrayList<Integer>();
-		for (int i = 0; i < course.getHoleCount(); ++i) {
-			averages.add(null);
+	/**
+	 * Generates a list containing the average score for a specified player of each hole on a
+	 *  specified course.
+	 * @param playerId
+	 * @param course
+	 * @param scorecardId of the current scorecard. Scores from the current scorecard do not
+	 *  factor when calculating averages.
+	 * @return
+	 */
+	private List<Integer> getAveragesForPlayer(long playerId, Course course, long scorecardId) {
+		List<Integer> averages = PerformanceEntryUtil.getUtil().getPerformanceAveragesFromDatabase(playerId, course.getId(), scorecardId);
+
+		if (averages.size() == 0) {
+			// create an appropriately sized list of null values
+			for (int i = 0; i < course.getHoleCount(); ++i) {
+				averages.add(null);
+			}
 		}
 
 		return averages;
 	}
-
 }

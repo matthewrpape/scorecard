@@ -7,15 +7,15 @@ public class DatabaseUtils {
 
 	private static final String STRING_SEPARATOR = ",";
 
-	public static String buildStringFromList(List<Integer> list) {
+	public static String buildStringFromList(List<? extends Number> list) {
 		StringBuilder builder = new StringBuilder();
-		for (Integer value : list) {
+		for (Number value : list) {
 			builder.append(value.toString());
 			builder.append(STRING_SEPARATOR);
 		}
 		String listString = builder.toString();
 
-		return listString.substring(0, listString.length() - 1);
+		return listString.length() > 1 ? listString.substring(0, listString.length() - 1) : "";
 	}
 
 	public static List<Integer> buildListFromString(String listString) {
