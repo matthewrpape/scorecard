@@ -69,7 +69,7 @@ public class EditScorecardFragment extends Fragment {
 
 	private void setupScorecardPager() {
 		Map<Player, List<Integer>> playerScores = mScorecard.getPlayerScores();
-		Map<Player, List<Integer>> playerAverages = getAveragesForPlayers(mScorecard.getPlayers(), mScorecard.getCourse());
+		Map<Player, List<Integer>> playerAverages = getAveragesForPlayers(mScorecard.getPlayers(), mScorecard.getCourse(), mScorecard.getId());
 		mAdapter = new ScorecardPlayerPagerAdapter(mScorecard.getPlayers(), mScorecard.getCourse().getParList(), playerScores, playerAverages);
 		mViewPager.setAdapter(mAdapter);
 
@@ -121,12 +121,14 @@ public class EditScorecardFragment extends Fragment {
 	 *  specified course.
 	 * @param players
 	 * @param course
+	 * @param scorecardId of the current scorecard. Scores form the current scorecard do not
+	 *  factor when calculating averages.
 	 * @return
 	 */
-	private Map<Player, List<Integer>> getAveragesForPlayers(List<Player> players, Course course) {
+	private Map<Player, List<Integer>> getAveragesForPlayers(List<Player> players, Course course, long scorecardId) {
 		Map<Player, List<Integer>> playerAverages = new HashMap<Player, List<Integer>>();
 		for (Player player : players) {
-			List<Integer> averages = getAveragesForPlayer(player.getId(), course);
+			List<Integer> averages = getAveragesForPlayer(player.getId(), course, scorecardId);
 			playerAverages.put(player, averages);
 		}
 
@@ -138,10 +140,12 @@ public class EditScorecardFragment extends Fragment {
 	 *  specified course.
 	 * @param playerId
 	 * @param course
+	 * @param scorecardId of the current scorecard. Scores from the current scorecard do not
+	 *  factor when calculating averages.
 	 * @return
 	 */
-	private List<Integer> getAveragesForPlayer(long playerId, Course course) {
-		List<Integer> averages = PerformanceEntryUtil.getUtil().getPerformanceAveragesFromDatabase(playerId, course.getId());
+	private List<Integer> getAveragesForPlayer(long playerId, Course course, long scorecardId) {
+		List<Integer> averages = PerformanceEntryUtil.getUtil().getPerformanceAveragesFromDatabase(playerId, course.getId(), scorecardId);
 
 		if (averages.size() == 0) {
 			// create an appropriately sized list of null values

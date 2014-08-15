@@ -162,15 +162,17 @@ public class PerformanceEntryUtil {
 
 	/**
 	 * Returns a list containing the average score of a particular player for each hole of a
-	 *  particular course
+	 *  particular course.
 	 * @param playerId
 	 * @param courseId
+	 * @param scorecardId of the current scorecard. Scores on the current scorecard do not factor
+	 *  when calculating averages
 	 * @return
 	 */
-	public List<Integer> getPerformanceAveragesFromDatabase(long playerId, long courseId) {
+	public List<Integer> getPerformanceAveragesFromDatabase(long playerId, long courseId, long scorecardId) {
 		// get database and query for entries associated with the specified player and course
 		SQLiteDatabase db = mHelper.getReadableDatabase();
-		Cursor cursor = getPerformanceScoreResultsFromDatabase(db, playerId, courseId);
+		Cursor cursor = getPerformanceScoreResultsFromDatabase(db, playerId, courseId, scorecardId);
 
 		// convert database results into a list of lists of scores
 		List<List<Integer>> performanceScores = getPerformanceScoresFromResults(cursor);
@@ -238,18 +240,20 @@ public class PerformanceEntryUtil {
 	 * Query the database to get a list of past performance scores for a particular player on a
 	 *  particular course.
 	 * @param db
-	 * @param playerId
-	 * @param courseId
+	 * @param playerId of the player whose scores we are looking up
+	 * @param courseId of the course on which scores we are interested in
+	 * @param scorecardId of the current scorecard. Performances on the current scorecard don't factor into averages.
 	 * @return cursor to database results, or null if none exist
 	 */
-	private Cursor getPerformanceScoreResultsFromDatabase(SQLiteDatabase db, long playerId, long courseId) {
+	private Cursor getPerformanceScoreResultsFromDatabase(SQLiteDatabase db, long playerId, long courseId, long scorecardId) {
 		// find out which scorecards occured at the specified course
 		List<Long> scorecardIds = ScorecardEntryUtil.getUtil().getScorecardIdsFromDatabase(courseId);
 
 		// define which columns we are interested in
 		String[] projection = {PerformanceEntry.COLUMN_SCORES};
-		String whereClause = String.format("%s IN (%s) AND %s = '%s'", PerformanceEntry.COLUMN_SCORECARD_ID,
-		        DatabaseUtils.buildStringFromList(scorecardIds), PerformanceEntry.COLUMN_PLAYER_ID, String.valueOf(playerId));
+		String whereClause = String.format("%s IN (%s) AND %s = '%s' AND %s != '%s'", PerformanceEntry.COLUMN_SCORECARD_ID,
+		        DatabaseUtils.buildStringFromList(scorecardIds), PerformanceEntry.COLUMN_PLAYER_ID, String.valueOf(playerId),
+		        PerformanceEntry.COLUMN_SCORECARD_ID, String.valueOf(scorecardId));
 
 		// query the db
 		return db.query(PerformanceEntry.TABLE_NAME, projection, whereClause, null, null, null, null);

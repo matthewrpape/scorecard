@@ -2,8 +2,8 @@
 
     <!-- app settings -->
     <string name="app_name">Scorecard</string>
-    <string name="version_name">0.1.1</string>
-    <string name="friendly_version_name">version 0.1.1</string>
+    <string name="version_name">0.1.2</string>
+    <string name="friendly_version_name">version 0.1.2</string>
 
     <!-- loading screen -->
     <string name="loading">Loading…</string>
